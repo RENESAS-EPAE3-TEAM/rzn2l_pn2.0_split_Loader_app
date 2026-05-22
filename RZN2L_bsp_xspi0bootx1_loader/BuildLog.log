@@ -377,3 +377,5 @@ Total number of errors: 0
 Total number of warnings: 2
 Resolving dependencies...
 Build succeeded
+
+Live logging to 'C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader\BuildLog.log' enabled.

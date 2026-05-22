@@ -5,7 +5,7 @@
     </device>
     <linkerFile>
         <override>true</override>
-        <path>$PROJ_DIR$/script/fsp_xspi0_boot.icf</path>
+        <path>$PROJ_DIR$/script/fsp_xspi0_boot_loader.icf</path>
     </linkerFile>
     <extraOptions>
         <arg>-f "$PROJ_DIR$/xcl/rasc_iccarm"</arg>

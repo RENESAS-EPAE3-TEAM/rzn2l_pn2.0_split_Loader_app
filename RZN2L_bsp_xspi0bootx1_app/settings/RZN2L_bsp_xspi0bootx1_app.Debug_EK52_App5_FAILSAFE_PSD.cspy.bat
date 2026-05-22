@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\iar\ewarm-9.60.3\common\bin\cspybat" -f "C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug.general.xcl" --backend -f "C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug.driver.xcl" 
+"C:\iar\ewarm-9.70.2\common\bin\cspybat" -f "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App5_FAILSAFE_PSD.general.xcl" --backend -f "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App5_FAILSAFE_PSD.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\iar\ewarm-9.60.3\common\bin\cspybat" -f "C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug.driver.xcl" 
+"C:\iar\ewarm-9.70.2\common\bin\cspybat" -f "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App5_FAILSAFE_PSD.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App5_FAILSAFE_PSD.driver.xcl" 
 
 @echo off 
 :end

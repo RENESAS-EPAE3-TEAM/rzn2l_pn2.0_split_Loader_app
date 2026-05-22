@@ -1,0 +1,16 @@
+C:\iar\ewarm-9.70.2\arm\bin\armproc.dll
+
+ C:\iar\ewarm-9.70.2\arm\bin\armjet.dll
+
+ C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\Debug_EK52_App3_IsoApp\Exe\RZN2L_bsp_xspi0bootx1_app.out
+
+ --plugin=C:\iar\ewarm-9.70.2\arm\bin\armLibSupportUniversal.dll
+
+ --device_macro=C:\iar\ewarm-9.70.2\arm/config/debugger/Renesas/RZN2L.dmac
+
+ --flash_loader=C:\iar\ewarm-9.70.2\arm/config/flashloader/Renesas/FlashRSK_RZN2L.board
+
+ 
+
+
+
