@@ -1,0 +1,14 @@
+// generated extended command line file - do not edit
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc/api"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/src/bsp/mcu/all/cr"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc/instances"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/arm/CMSIS_6/CMSIS/Core/Include"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn_gen"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn_cfg/fsp_cfg"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/src"
+-I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn_cfg/fsp_cfg/bsp"
+-D_RZN_CORE=CR52_0
+-D_RENESAS_RZN_
+-D_RZN_ORDINAL=1

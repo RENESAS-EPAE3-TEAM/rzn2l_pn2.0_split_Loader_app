@@ -1,0 +1,41 @@
+# Default: let Git handle line endings via core.autocrlf for text files
+* text=auto
+
+# IAR project / configuration files - always CRLF (Windows tooling expects it)
+*.ewp     text eol=crlf
+*.ewd     text eol=crlf
+*.ewt     text eol=crlf
+*.eww     text eol=crlf
+*.icf     text eol=crlf
+*.xcl     text eol=crlf
+*.ipcf    text eol=crlf
+*.custom_argvars text eol=crlf
+*.crun    text eol=crlf
+*.dbgdt   text eol=crlf
+*.dnx     text eol=crlf
+*.xml     text eol=crlf
+
+# Source code - normalised to LF (the IAR compiler is fine with either, but LF
+# keeps diffs clean across tools).
+*.c       text eol=lf
+*.h       text eol=lf
+*.cpp     text eol=lf
+*.hpp     text eol=lf
+*.s       text eol=lf
+*.S       text eol=lf
+*.asm     text eol=lf
+
+# Scripts
+*.bat     text eol=crlf
+*.ps1     text eol=crlf
+*.sh      text eol=lf
+
+# Always binary
+*.out     binary
+*.elf     binary
+*.bin     binary
+*.hex     binary
+*.srec    binary
+*.a       binary
+*.lib     binary
+*.o       binary

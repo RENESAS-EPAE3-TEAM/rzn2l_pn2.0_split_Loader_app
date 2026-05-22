@@ -1,0 +1,47 @@
+# ============================================================================
+# Repository scope: ONLY the two target IAR projects below are tracked.
+# Everything else in this directory (e.g. rzn2l_xspi_boot reference source,
+# scratch files) is ignored.
+# ============================================================================
+
+# Ignore every top-level entry by default ...
+/*
+
+# ... then re-include exactly what we want to track at the root.
+!/.gitignore
+!/.gitattributes
+!/RZN2L_bsp_xspi0bootx1_loader/
+!/RZN2L_bsp_xspi0bootx1_app/
+
+# ----------------------------------------------------------------------------
+# IAR EWARM build outputs (regenerated every build)
+# ----------------------------------------------------------------------------
+**/Debug/
+**/Debug_*/
+**/Release/
+**/Release_*/
+**/BrowseInfo/
+**/Obj/
+**/List/
+**/Exe/
+
+# IAR intermediate / dependency / browse-info files
+*.dep
+*.pbi
+*.pbd
+*.pbw
+*.browse
+*.wsdt
+*.wspos
+*.ewt.cspy.*
+
+# IAR backup files created by the IDE / RASC
+**/Backup of *
+*.bak
+*~
+*.orig
+*.tmp
+
+# OS junk
+Thumbs.db
+.DS_Store

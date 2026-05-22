@@ -1,0 +1,382 @@
+/*=============================================================================
+ * fsp_xspi0_boot_app.icf
+ *
+ * IAR linker configuration for the App half of the Loader+App split.
+ *
+ * Memory layout (modelled on the source rzn2l_xspi_boot.icf primary branch)
+ * ========================================================================
+ *
+ * xSPI0 flash (CS0, 0x60000000) - Loader's image occupies 0x60000000-0x600FFFFF;
+ *                                  App's image starts at 0x60100000.
+ *
+ *    +-----------------------------------+ 0x60100000
+ *    | LDR_PARAM (.loader_param)         |
+ *    +-----------------------------------+ 0x60100050
+ *    | APPLICATION_PRG_RBLOCK            |   Loader copies as one blob to SRAM
+ *    |   VECTOR_RBLOCK                   |     (0x800)
+ *    |   USER_PRG_RBLOCK   ro code       |     (FSP + glue code init)
+ *    |   USER_DATA_RBLOCK  data inits    |     (.data/.rodata/.version inits)
+ *    +-----------------------------------+
+ *    | APPLICATION_SDRAM_RBLOCK          |   Loader copies as one blob to SDRAM
+ *    |   SYSTEM_PRG_RBLOCK   ro code     |     (obsd* PROFINET stack code)
+ *    |   SYSTEM_DATA_RBLOCK  data inits  |     (obsd* .rodata_init/.data_init)
+ *    +-----------------------------------+
+ *    | readonly (anything else)          |
+ *    +-----------------------------------+
+ *
+ * SystemRAM 0x10000000-0x1017FFFF (1.5 MB)
+ *
+ *    +-----------------------------------+ 0x10000000
+ *    | APPLICATION_PRG_WBLOCK            |   memcpy destination from flash
+ *    |   VECTOR_WBLOCK (reset vector)    |     (0x800)
+ *    |   USER_PRG_WBLOCK   rw code       |     (live FSP code)
+ *    |   USER_DATA_WBLOCK  rw data       |     (.data/.rodata/.version live)
+ *    +-----------------------------------+
+ *    | USER_DATA_ZBLOCK, NOINIT_BLOCK,   |   zero-init / uninit
+ *    | ARM32_STACK, AARCH64_STACK,       |
+ *    | THREAD_STACK                      |
+ *    +-----------------------------------+ 0x10130000
+ *    | TASK_STACK (FreeRTOS task stacks) |   (128 KB)
+ *    +-----------------------------------+ 0x10150000
+ *    | HIGH_RAM (readwrite spillover)    |   (192 KB)
+ *    +-----------------------------------+ 0x10180000
+ *
+ * SDRAM CS2 cacheable 0x74000000-0x77FFFFFF (W9825G6KH-6, 32 MB)
+ *
+ *    +-----------------------------------+ 0x74000000
+ *    | APPLICATION_SDRAM_WBLOCK          |   memcpy destination from flash
+ *    |   SYSTEM_PRG_WBLOCK obsd* code    |
+ *    |   SYSTEM_DATA_WBLOCK obsd* data   |
+ *    +-----------------------------------+
+ *    | EXT_DATA_ZBLOCK (.bss spill)      |
+ *    +-----------------------------------+ 0x74200000
+ *    | HEAP_BLOCK / HEAP4_BLOCK          |   (2 MB)
+ *    +-----------------------------------+ 0x74400000
+ *    | EXTRAMNC_BLOCK (noncache buffers) |   accessed via 0x54400000 mirror
+ *    +-----------------------------------+ 0x74700000
+ *
+ *=============================================================================*/
+
+include "memory_regions.icf";
+
+/*-----------------------------------------------------------------------------*/
+/*  Symbols / addresses                                                        */
+/*-----------------------------------------------------------------------------*/
+
+define symbol APP_FLASH_START          = 0x60100000;
+define symbol APP_FLASH_SIZE           = 0x00400000;       /* 4 MB           */
+
+define symbol APP_MANIFEST_SIZE        = 0x00000050;       /* see app_manifest.c */
+define symbol APP_RAM_START            = SYSTEM_RAM_START; /* 0x10000000      */
+define symbol APP_RAM_SIZE             = 0x00130000;       /* 1216 KB        */
+
+define symbol APP_TASKSTK_START        = APP_RAM_START + APP_RAM_SIZE;          /* 0x10130000 */
+define symbol APP_TASKSTK_SIZE         = 0x00020000;                            /* 128 KB     */
+
+define symbol APP_HIGHRAM_START        = APP_TASKSTK_START + APP_TASKSTK_SIZE;  /* 0x10150000 */
+define symbol APP_HIGHRAM_SIZE         = (SYSTEM_RAM_START + SYSTEM_RAM_LENGTH) - APP_HIGHRAM_START;
+
+define symbol SDRAM_SYSTEM_START       = 0x74000000;       /* CS2 cacheable  */
+define symbol SDRAM_SYSTEM_SIZE        = 0x00200000;       /* 2 MB           */
+
+define symbol SDRAM_HEAP_START         = 0x74200000;
+define symbol SDRAM_HEAP_SIZE          = 0x00200000;       /* 2 MB           */
+
+define symbol SDRAM_EXTRAMNC_NC_START  = 0x54400000;       /* CS2 noncache mirror */
+define symbol SDRAM_EXTRAMNC_C_START   = 0x74400000;       /* cached counterpart  */
+define symbol SDRAM_EXTRAMNC_SIZE      = 0x00300000;       /* 3 MB           */
+
+define symbol INTVEC_ADDRESS           = APP_RAM_START;    /* 0x10000000     */
+
+/*-----------------------------------------------------------------------------*/
+/*  Memory + Regions                                                           */
+/*-----------------------------------------------------------------------------*/
+
+define memory mem with size = 4G;
+
+define region LDR_PARAM_region       = mem:[from APP_FLASH_START                     size APP_MANIFEST_SIZE];
+define region ROM_region             = mem:[from APP_FLASH_START + APP_MANIFEST_SIZE  size APP_FLASH_SIZE - APP_MANIFEST_SIZE];
+define region APP_RAM_region         = mem:[from APP_RAM_START                       size APP_RAM_SIZE];
+define region APP_TASKSTK_region     = mem:[from APP_TASKSTK_START                   size APP_TASKSTK_SIZE];
+define region APP_HIGHRAM_region     = mem:[from APP_HIGHRAM_START                   size APP_HIGHRAM_SIZE];
+define region SDRAM_SYSTEM_region    = mem:[from SDRAM_SYSTEM_START                  size SDRAM_SYSTEM_SIZE];
+define region SDRAM_HEAP_region      = mem:[from SDRAM_HEAP_START                    size SDRAM_HEAP_SIZE];
+define region EXTRAM_NC_INIT_region  = mem:[from SDRAM_EXTRAMNC_NC_START             size SDRAM_EXTRAMNC_SIZE];
+
+/*=============================================================================*/
+/*  B L O C K   L A Y O U T                                                    */
+/*=============================================================================*/
+
+/*-----------------------------------------------------------------------------*/
+/*  Vector table (16 entries x 0x80)                                           */
+/*-----------------------------------------------------------------------------*/
+
+define block VECTOR_RBLOCK with fixed order
+{
+    block VECTOR_RBLOCK_0x000 with alignment = 0x80 { ro code section .intvec_init       },
+    block VECTOR_RBLOCK_0x080 with alignment = 0x80 { ro code section .intvec_0x080_init },
+    block VECTOR_RBLOCK_0x100 with alignment = 0x80 { ro code section .intvec_0x100_init },
+    block VECTOR_RBLOCK_0x180 with alignment = 0x80 { ro code section .intvec_0x180_init },
+    block VECTOR_RBLOCK_0x200 with alignment = 0x80 { ro code section .intvec_0x200_init },
+    block VECTOR_RBLOCK_0x280 with alignment = 0x80 { ro code section .intvec_0x280_init },
+    block VECTOR_RBLOCK_0x300 with alignment = 0x80 { ro code section .intvec_0x300_init },
+    block VECTOR_RBLOCK_0x380 with alignment = 0x80 { ro code section .intvec_0x380_init },
+    block VECTOR_RBLOCK_0x400 with alignment = 0x80 { ro code section .intvec_0x400_init },
+    block VECTOR_RBLOCK_0x480 with alignment = 0x80 { ro code section .intvec_0x480_init },
+    block VECTOR_RBLOCK_0x500 with alignment = 0x80 { ro code section .intvec_0x500_init },
+    block VECTOR_RBLOCK_0x580 with alignment = 0x80 { ro code section .intvec_0x580_init },
+    block VECTOR_RBLOCK_0x600 with alignment = 0x80 { ro code section .intvec_0x600_init },
+    block VECTOR_RBLOCK_0x680 with alignment = 0x80 { ro code section .intvec_0x680_init },
+    block VECTOR_RBLOCK_0x700 with alignment = 0x80 { ro code section .intvec_0x700_init },
+    block VECTOR_RBLOCK_0x780 with alignment = 0x80 { ro code section .intvec_0x780_init }
+};
+
+define block VECTOR_WBLOCK with fixed order
+{
+    block VECTOR_WBLOCK_0x000 with alignment = 0x80 { rw code section .intvec       },
+    block VECTOR_WBLOCK_0x080 with alignment = 0x80 { rw code section .intvec_0x080 },
+    block VECTOR_WBLOCK_0x100 with alignment = 0x80 { rw code section .intvec_0x100 },
+    block VECTOR_WBLOCK_0x180 with alignment = 0x80 { rw code section .intvec_0x180 },
+    block VECTOR_WBLOCK_0x200 with alignment = 0x80 { rw code section .intvec_0x200 },
+    block VECTOR_WBLOCK_0x280 with alignment = 0x80 { rw code section .intvec_0x280 },
+    block VECTOR_WBLOCK_0x300 with alignment = 0x80 { rw code section .intvec_0x300 },
+    block VECTOR_WBLOCK_0x380 with alignment = 0x80 { rw code section .intvec_0x380 },
+    block VECTOR_WBLOCK_0x400 with alignment = 0x80 { rw code section .intvec_0x400 },
+    block VECTOR_WBLOCK_0x480 with alignment = 0x80 { rw code section .intvec_0x480 },
+    block VECTOR_WBLOCK_0x500 with alignment = 0x80 { rw code section .intvec_0x500 },
+    block VECTOR_WBLOCK_0x580 with alignment = 0x80 { rw code section .intvec_0x580 },
+    block VECTOR_WBLOCK_0x600 with alignment = 0x80 { rw code section .intvec_0x600 },
+    block VECTOR_WBLOCK_0x680 with alignment = 0x80 { rw code section .intvec_0x680 },
+    block VECTOR_WBLOCK_0x700 with alignment = 0x80 { rw code section .intvec_0x700 },
+    block VECTOR_WBLOCK_0x780 with alignment = 0x80 { rw code section .intvec_0x780 }
+};
+
+/*-----------------------------------------------------------------------------*/
+/*  USER program: FSP drivers + application glue (SRAM-resident)               */
+/*  Everything except obsd* PROFINET stack and a few special sections.         */
+/*-----------------------------------------------------------------------------*/
+
+define block USER_PRG_RBLOCK with alignment = 8
+{
+    ro code
+}
+except
+{
+    ro code object obsd*.o,
+    ro code section .intvec_init,
+    ro code section .intvec_0x080_init, ro code section .intvec_0x100_init,
+    ro code section .intvec_0x180_init, ro code section .intvec_0x200_init,
+    ro code section .intvec_0x280_init, ro code section .intvec_0x300_init,
+    ro code section .intvec_0x380_init, ro code section .intvec_0x400_init,
+    ro code section .intvec_0x480_init, ro code section .intvec_0x500_init,
+    ro code section .intvec_0x580_init, ro code section .intvec_0x600_init,
+    ro code section .intvec_0x680_init, ro code section .intvec_0x700_init,
+    ro code section .intvec_0x780_init,
+    ro code section .reset_handler_init
+};
+
+define block USER_PRG_WBLOCK with alignment = 8
+{
+    rw code
+}
+except
+{
+    rw code object obsd*.o,
+    rw code section .intvec,
+    rw code section .intvec_0x080, rw code section .intvec_0x100,
+    rw code section .intvec_0x180, rw code section .intvec_0x200,
+    rw code section .intvec_0x280, rw code section .intvec_0x300,
+    rw code section .intvec_0x380, rw code section .intvec_0x400,
+    rw code section .intvec_0x480, rw code section .intvec_0x500,
+    rw code section .intvec_0x580, rw code section .intvec_0x600,
+    rw code section .intvec_0x680, rw code section .intvec_0x700,
+    rw code section .intvec_0x780,
+    rw code section .reset_handler
+};
+
+define block USER_DATA_RBLOCK with fixed order, alignment = 8
+{
+    block USER_DATA_RBLOCK0 with alignment = 8 { section .rodata_init         },
+    block USER_DATA_RBLOCK1 with alignment = 8 { section __DLIB_PERTHREAD_init },
+    block USER_DATA_RBLOCK2 with alignment = 8 { section .data_init           },
+    block USER_DATA_RBLOCK3 with alignment = 8 { section .version_init        }
+}
+except
+{
+    section .rodata_init       object obsd*.o,
+    section .data_init         object obsd*.o
+};
+
+define block USER_DATA_WBLOCK with fixed order, alignment = 8
+{
+    block USER_DATA_WBLOCK0 with alignment = 8 { section .rodata          },
+    block USER_DATA_WBLOCK1 with alignment = 8 { section __DLIB_PERTHREAD },
+    block USER_DATA_WBLOCK2 with alignment = 8 { section .data            },
+    block USER_DATA_WBLOCK3 with alignment = 8 { section .version         }
+}
+except
+{
+    section .rodata object obsd*.o,
+    section .data   object obsd*.o
+};
+
+/*-----------------------------------------------------------------------------*/
+/*  SYSTEM program: PROFINET (obsd*.o) - SDRAM-resident (bulky)                */
+/*-----------------------------------------------------------------------------*/
+
+define block SYSTEM_PRG_RBLOCK with alignment = 8
+{
+    ro code object obsd*.o
+};
+
+define block SYSTEM_PRG_WBLOCK with alignment = 8
+{
+    rw code object obsd*.o
+};
+
+define block SYSTEM_DATA_RBLOCK with fixed order, alignment = 8
+{
+    block SYSTEM_DATA_RBLOCK0 with alignment = 8 { section .rodata_init object obsd*.o },
+    block SYSTEM_DATA_RBLOCK1 with alignment = 8 { section .data_init   object obsd*.o }
+};
+
+define block SYSTEM_DATA_WBLOCK with fixed order, alignment = 8
+{
+    block SYSTEM_DATA_WBLOCK0 with alignment = 8 { section .rodata object obsd*.o },
+    block SYSTEM_DATA_WBLOCK1 with alignment = 8 { section .data   object obsd*.o }
+};
+
+/*-----------------------------------------------------------------------------*/
+/*  Zero-init / uninitialised / stack blocks                                   */
+/*-----------------------------------------------------------------------------*/
+
+define block USER_DATA_ZBLOCK with alignment = 8 { };
+define block EXT_DATA_ZBLOCK  with alignment = 4 { section .bss, section xdata_d_tcm };
+define block NOINIT_BLOCK     with alignment = 8 { zeroinit };
+
+define block ARM32_STACK with fixed order
+{
+    block SYS_STACK with alignment = 8 { rw section .sys_stack },
+    block SVC_STACK with alignment = 8 { rw section .svc_stack },
+    block IRQ_STACK with alignment = 8 { rw section .irq_stack },
+    block FIQ_STACK with alignment = 8 { rw section .fiq_stack },
+    block UND_STACK with alignment = 8 { rw section .und_stack },
+    block ABT_STACK with alignment = 8 { rw section .abt_stack }
+};
+define block AARCH64_STACK   with alignment = 8 { rw section .aarch64_stack* };
+define block THREAD_STACK    with alignment = 8 { rw section .stack*         };
+define block TASKSTACK_BLOCK with alignment = 4 { section task_stack         };
+
+define block HEAP_BLOCK   with alignment = 8 { rw section HEAP              };
+define block HEAP4_BLOCK  with alignment = 4 { section .bss object heap_4.o };
+
+define block EXTRAMNC_BLOCK with alignment = 32 { section nocache, section uncached_mem };
+
+/*-----------------------------------------------------------------------------*/
+/*  Super-blocks consumed by the Loader's loader_table                         */
+/*                                                                             */
+/*  The Loader copies them as opaque byte blobs via                            */
+/*    memcpy(__section_begin("APPLICATION_PRG_WBLOCK"),                        */
+/*           __section_begin("APPLICATION_PRG_RBLOCK"),                        */
+/*           __section_size ("APPLICATION_PRG_RBLOCK"));                       */
+/*  and similarly for APPLICATION_SDRAM_*.                                     */
+/*                                                                             */
+/*  Sub-block order in RBLOCK and WBLOCK MUST match.                           */
+/*-----------------------------------------------------------------------------*/
+
+define block APPLICATION_PRG_RBLOCK with fixed order, alignment = 0x80
+{
+    block VECTOR_RBLOCK,
+    block USER_PRG_RBLOCK,
+    block USER_DATA_RBLOCK
+};
+
+define block APPLICATION_PRG_WBLOCK with fixed order, alignment = 0x80
+{
+    block VECTOR_WBLOCK,
+    block USER_PRG_WBLOCK,
+    block USER_DATA_WBLOCK
+};
+
+define block APPLICATION_SDRAM_RBLOCK with fixed order, alignment = 8
+{
+    block SYSTEM_PRG_RBLOCK,
+    block SYSTEM_DATA_RBLOCK
+};
+
+define block APPLICATION_SDRAM_WBLOCK with fixed order, alignment = 8
+{
+    block SYSTEM_PRG_WBLOCK,
+    block SYSTEM_DATA_WBLOCK
+};
+
+/*=============================================================================*/
+/*  S P E C I F Y I N G   I N I T I A L I Z A T I O N                          */
+/*=============================================================================*/
+
+initialize manually
+{
+    ro code,
+    section .data,
+    section __DLIB_PERTHREAD,
+    section .rodata,
+    section .version,
+    section .data_extramnc*
+};
+
+do not initialize { zeroinit, section .noinit };
+
+/*=============================================================================*/
+/*  S E C T I O N   L A Y O U T                                                */
+/*=============================================================================*/
+
+/*-----------------------------------------------------------------------------*/
+/*  Flash (xSPI0 CS0)                                                          */
+/*-----------------------------------------------------------------------------*/
+
+place in LDR_PARAM_region          { readonly section .app_manifest };
+
+place at start of ROM_region       { block APPLICATION_PRG_RBLOCK };
+place in ROM_region                { block APPLICATION_SDRAM_RBLOCK };
+place in ROM_region                { readonly };
+
+/*-----------------------------------------------------------------------------*/
+/*  SystemRAM 0x10000000-0x1017FFFF                                            */
+/*-----------------------------------------------------------------------------*/
+
+/* APPLICATION_PRG_WBLOCK starts at 0x10000000 - vector table is at offset 0  */
+/* inside the super-block, so the reset vector ends up at 0x10000000 as the   */
+/* Loader's jump target expects.                                              */
+place at start of APP_RAM_region   { block APPLICATION_PRG_WBLOCK };
+place in APP_RAM_region
+{
+    block USER_DATA_ZBLOCK,
+    block NOINIT_BLOCK,
+    block ARM32_STACK,
+    block AARCH64_STACK,
+    block THREAD_STACK
+};
+
+place in APP_TASKSTK_region        { block TASKSTACK_BLOCK };
+
+place in APP_HIGHRAM_region        { readwrite };
+
+/*-----------------------------------------------------------------------------*/
+/*  SDRAM (CS2 cacheable)                                                      */
+/*-----------------------------------------------------------------------------*/
+
+place at start of SDRAM_SYSTEM_region { block APPLICATION_SDRAM_WBLOCK };
+place in SDRAM_SYSTEM_region          { block EXT_DATA_ZBLOCK };
+
+place in SDRAM_HEAP_region            { block HEAP_BLOCK, block HEAP4_BLOCK };
+
+place in EXTRAM_NC_INIT_region with mirroring to SDRAM_EXTRAMNC_C_START
+                                      { block EXTRAMNC_BLOCK };
+
+/*=============================================================================*/
+/*  E X P O R T E D   S Y M B O L S                                            */
+/*=============================================================================*/
+
+define exported symbol __region_APP_FLASH_start__ = APP_FLASH_START;
+define exported symbol __region_APP_RAM_start__   = APP_RAM_START;
+define exported symbol __region_SDRAM_start__     = SDRAM_SYSTEM_START;
