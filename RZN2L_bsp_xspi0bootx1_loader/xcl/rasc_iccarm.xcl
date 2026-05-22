@@ -1,14 +1,15 @@
 // generated extended command line file - do not edit
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc/api"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/src/bsp/mcu/all/cr"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc/instances"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn/arm/CMSIS_6/CMSIS/Core/Include"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn_gen"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn_cfg/fsp_cfg"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/src"
--I"C:\RenesasDev\Loader_application_projects\RZN2L_bsp_xspi0bootx1_loader/rzn_cfg/fsp_cfg/bsp"
--D_RZN_CORE=CR52_0
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/src"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc/instances"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn/arm/CMSIS_6/CMSIS/Core/Include"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc/api"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn_cfg/fsp_cfg/bsp"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn_cfg/fsp_cfg"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/inc"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn_cfg/driver"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn_gen"
+-I"C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader/rzn/fsp/src/bsp/mcu/all/cr"
 -D_RENESAS_RZN_
+-D_RZN_CORE=CR52_0
 -D_RZN_ORDINAL=1

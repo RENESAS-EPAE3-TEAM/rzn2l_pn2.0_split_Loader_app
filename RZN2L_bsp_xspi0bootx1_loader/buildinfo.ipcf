@@ -81,9 +81,11 @@
             <path>rzn/fsp/inc/api/bsp_api.h</path>
             <path>rzn/fsp/inc/api/fsp_common_api.h</path>
             <path>rzn/fsp/inc/api/r_ioport_api.h</path>
+            <path>rzn/fsp/inc/api/r_spi_flash_api.h</path>
             <path>rzn/fsp/inc/fsp_features.h</path>
             <path>rzn/fsp/inc/fsp_version.h</path>
             <path>rzn/fsp/inc/instances/r_ioport.h</path>
+            <path>rzn/fsp/inc/instances/r_xspi_qspi.h</path>
             <path>rzn/fsp/src/bsp/cmsis/Device/RENESAS/Include/cmsis_compiler_rz.h</path>
             <path>rzn/fsp/src/bsp/cmsis/Device/RENESAS/Include/cr/cmsis_cp15.h</path>
             <path>rzn/fsp/src/bsp/cmsis/Device/RENESAS/Include/cr/cmsis_iccarm.h</path>
@@ -146,8 +148,10 @@
             <path>rzn/fsp/src/bsp/mcu/rzn2l/bsp_mcu_info.h</path>
             <path>rzn/fsp/src/bsp/mcu/rzn2l/bsp_override.h</path>
             <path>rzn/fsp/src/r_ioport/r_ioport.c</path>
+            <path>rzn/fsp/src/r_xspi_qspi/r_xspi_qspi.c</path>
         </group>
         <group name="Build Configuration">
+            <path>rzn_cfg/driver/r_xspi_qspi_cfg.h</path>
             <path>rzn_cfg/fsp_cfg/bsp/board_cfg.h</path>
             <path>rzn_cfg/fsp_cfg/bsp/bsp_cfg.h</path>
             <path>rzn_cfg/fsp_cfg/bsp/bsp_mcu_device_cfg.h</path>
@@ -166,6 +170,7 @@
             <path>rzn_gen/hal_data.h</path>
             <path>rzn_gen/main.c</path>
             <path>rzn_gen/pin_data.c</path>
+            <path>rzn_gen/pin_data.c.original.bak</path>
             <path>rzn_gen/vector_data.c</path>
             <path>rzn_gen/vector_data.h</path>
         </group>

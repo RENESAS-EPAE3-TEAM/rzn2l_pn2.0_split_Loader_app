@@ -824,7 +824,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$\script\fsp_xspi0_boot_loader.icf</state>
+                    <state>$PROJ_DIR$/script/fsp_xspi0_boot.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -2323,6 +2323,9 @@
             <file>
                 <name>$PROJ_DIR$\rzn_cfg\fsp_cfg\r_ioport_cfg.h</name>
             </file>
+            <file>
+                <name>$PROJ_DIR$\rzn_cfg\driver\r_xspi_qspi_cfg.h</name>
+            </file>
         </group>
         <group>
             <name>Components</name>
@@ -2654,6 +2657,15 @@
                 <name>$PROJ_DIR$\rzn\fsp\inc\api\r_ioport_api.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\rzn\fsp\inc\api\r_spi_flash_api.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\rzn\fsp\src\r_xspi_qspi\r_xspi_qspi.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\rzn\fsp\inc\instances\r_xspi_qspi.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\rzn\fsp\src\bsp\cmsis\Device\RENESAS\Include\renesas.h</name>
             </file>
             <file>
@@ -2697,6 +2709,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\rzn_gen\pin_data.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\rzn_gen\pin_data.c.original.bak</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\rzn_gen\vector_data.c</name>

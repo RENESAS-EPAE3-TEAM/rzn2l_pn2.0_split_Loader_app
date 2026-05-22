@@ -934,33 +934,6 @@
       <property id="module.driver.xspi_hyper.pull_up_timing" value="module.driver.xspi_hyper.pull_up_timing.no_extension"/>
       <property id="module.driver.xspi_hyper.pull_down_timing" value="module.driver.xspi_hyper.pull_down_timing.no_extension"/>
     </module>
-    <module id="module.driver.qspi_on_xspi_qspi.958460396">
-      <property id="module.driver.xspi_qspi.name" value="g_qspi_ldr"/>
-      <property id="module.driver.xspi_qspi.unit" value="0"/>
-      <property id="module.driver.xspi_qspi.chip_select" value="module.driver.xspi_qspi.chip_select.cs0"/>
-      <property id="module.driver.xspi_qspi.flash_size" value="module.driver.xspi.memory_size.memory_size_64mb"/>
-      <property id="module.driver.xspi_qspi.spi_protocol" value="module.driver.xspi_qspi.spi_protocol.protocol_1s_4s_4s"/>
-      <property id="module.driver.xspi_qspi.address_bytes" value="module.driver.xspi_qspi.address_bytes.address_bytes_3"/>
-      <property id="module.driver.xspi_qspi.dummy_clocks" value="module.driver.xspi_qspi.dummy_clocks.dummy_clocks_6"/>
-      <property id="module.driver.xspi_qspi.page_program_command" value="0x02"/>
-      <property id="module.driver.xspi_qspi.read_command" value="0xEB"/>
-      <property id="module.driver.xspi_qspi.write_enable_command" value="0x06"/>
-      <property id="module.driver.xspi_qspi.status_command" value="0x05"/>
-      <property id="module.driver.xspi_qspi.write_status_bit" value="0"/>
-      <property id="module.driver.xspi_qspi.write_enable_bit" value="1"/>
-      <property id="module.driver.xspi_qspi.sector_erase_command" value="0x20"/>
-      <property id="module.driver.xspi_qspi.sector_erase_size" value="4096"/>
-      <property id="module.driver.xspi_qspi.block_erase_command" value="0xD8"/>
-      <property id="module.driver.xspi_qspi.block_erase_size" value="65536"/>
-      <property id="module.driver.xspi_qspi.block_erase_32kb_command" value="0x52"/>
-      <property id="module.driver.xspi_qspi.block_erase_32kb_size" value="32768"/>
-      <property id="module.driver.xspi_qspi.chip_erase_command" value="0xC7"/>
-      <property id="module.driver.xspi_qspi.xip_enter_command" value="0x20"/>
-      <property id="module.driver.xspi_qspi.xip_exit_command" value="0xFF"/>
-      <property id="module.driver.xspi_qspi.command_to_command_interval_clocks" value="module.driver.xspi_qspi.command_to_command_interval_clocks.7_cycles"/>
-      <property id="module.driver.xspi_qspi.cs_pulldown_lead" value="module.driver.xspi_qspi.cs_pulldown_lead.no_extension"/>
-      <property id="module.driver.xspi_qspi.cs_pullup_lag" value="module.driver.xspi_qspi.cs_pullup_lag.no_extension"/>
-    </module>
     <object id="rtos.awsfreertos.object.queue.890376556">
       <property id="rtos.awsfreertos.object.queue.symbol" value="psd_queue"/>
       <property id="rtos.awsfreertos.object.queue.item_size" value="1"/>
@@ -1005,7 +978,6 @@
         <stack module="module.driver.transfer_on_dmac.1525996150" requires="module.driver.uart_on_sci_uart.requires.transfer_tx"/>
       </stack>
       <stack module="module.driver.hyper_ram_on_xspi_hyper.2064180533"/>
-      <stack module="module.driver.qspi_on_xspi_qspi.958460396"/>
     </context>
     <context id="rtos.awsfreertos.thread.795320730">
       <property id="_symbol" value="sample_thread"/>

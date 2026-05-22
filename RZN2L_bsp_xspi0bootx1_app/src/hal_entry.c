@@ -279,41 +279,10 @@ void handle_error (fsp_err_t err)
  *
  * @param[in]  event    Where at in the start up process the code is currently at
  **********************************************************************************************************************/
-#if 0  /* Unused in the split application: Loader performs Quad-Enable. */
-#define QSPI_CMD_WRITE_ENABLE 0
-#define QSPI_CMD_WRITE_STATUS 1
-#define QSPI_CMD_READ_STATUS  2
-spi_flash_direct_transfer_t qspi_command[3] =
-{
-    {
-    .command        = 0x06, // WEN(Write Enable)
-    .address        = 0U,
-    .data           = 0U,
-    .command_length = 1U,
-    .address_length = 0U,
-    .data_length    = 0U,
-    .dummy_cycles   = 0U
-    },
-    {
-    .command        = 0x01, // WRSR(Write Status Register)
-    .address        = 0U,
-    .data           = 0x40,
-    .command_length = 1U,
-    .address_length = 0U,
-    .data_length    = 1U,
-    .dummy_cycles   = 0U
-    },
-    {
-    .command        = 0x05, // RDSR(Read Status Register)
-    .address        = 0U,
-    .data           = 0U,
-    .command_length = 1U,
-    .address_length = 0U,
-    .data_length    = 1U,
-    .dummy_cycles   = 0U
-    },
-};
-#endif
+/* QSPI Quad-Enable bootstrap (formerly here) has been moved into the Loader
+ * project (RZN2L_bsp_xspi0bootx1_loader/src/hal_entry.c). The Application
+ * keeps only the g_qspi0 instance which is used at runtime by the PROFINET
+ * stack (profinet_sdk/src/pns/rtos/rtos_rzt2_qspi_flash.c). */
 void R_BSP_WarmStart (bsp_warm_start_event_t event)
 {
     /* NOTE: BSP_WARM_START_POST_LOADER hook is handled by the Loader
