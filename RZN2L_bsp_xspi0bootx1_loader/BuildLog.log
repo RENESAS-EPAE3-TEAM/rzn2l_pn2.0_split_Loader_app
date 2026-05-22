@@ -323,3 +323,57 @@ Total number of errors: 0
 Total number of warnings: 2
 Resolving dependencies...
 Build succeeded
+
+RZN2L_bsp_xspi0bootx1_loader - Debug
+Cleaning... 40 files.
+Clean succeeded
+
+RZN2L_bsp_xspi0bootx1_loader - Debug
+board_init.c
+board_leds.c
+bsp_address_expander.c
+bsp_cache.c
+bsp_cache_core.c
+bsp_clocks.c
+bsp_common.c
+bsp_ddr.c
+bsp_delay.c
+bsp_ddr_fw_param.c
+bsp_delay_core.c
+bsp_io.c
+bsp_irq_core.c
+bsp_irq.c
+bsp_irq_sense.c
+bsp_loader_param.c
+bsp_sbrk.c
+bsp_mpu_core.c
+bsp_register_protection.c
+bsp_reset.c
+bsp_semaphore.c
+bsp_slave_stop.c
+bsp_tzc400.c
+r_ioport.c
+r_xspi_qspi.c
+startup.c
+startup_core.c
+system.c
+system_core.c
+common_data.c
+hal_data.c
+main.c
+pin_data.c
+vector_data.c
+hal_entry.c
+C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader\src\hal_entry.c(70) : Warning[Pe188]: enumerated type mixed with another type
+C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader\src\hal_entry.c(119) : Warning[Pe188]: enumerated type mixed with another type
+loader_table.c
+RZN2L_bsp_xspi0bootx1_loader.out
+RZN2L_bsp_xspi0bootx1_loader.srec
+RZN2L_bsp_xspi0bootx1_loader.sbd
+[INFO] Output file "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_loader\Debug\Exe\RZN2L_bsp_xspi0bootx1_loader.sbd" does not exist. Proceeding with RASC invocation...
+Generating Smart Bundle..
+
+Total number of errors: 0
+Total number of warnings: 2
+Resolving dependencies...
+Build succeeded

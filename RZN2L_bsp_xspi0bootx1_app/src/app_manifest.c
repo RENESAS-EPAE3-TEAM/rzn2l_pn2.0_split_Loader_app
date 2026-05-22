@@ -12,11 +12,16 @@
  * jumps to entry_point.
  *
  * The src/dst/size values are filled in by the IAR linker using the
- * __section_begin / __section_size intrinsics on the super-blocks defined in
- * script/fsp_xspi0_boot_app.icf.
+ * __section_begin / __section_size intrinsics on the blocks defined in
+ * script/fsp_xspi0_boot_app.icf:
  *
- *    APPLICATION_PRG_RBLOCK  ->  APPLICATION_PRG_WBLOCK   (SRAM @ 0x10000000)
- *    APPLICATION_SDRAM_RBLOCK -> APPLICATION_SDRAM_WBLOCK (SDRAM @ 0x74000000)
+ *    VECTOR_RBLOCK            -> VECTOR_WBLOCK            (ATCM       @ 0x00000000)
+ *    APPLICATION_PRG_RBLOCK   -> APPLICATION_PRG_WBLOCK   (SystemRAM  @ 0x10000100)
+ *    APPLICATION_SDRAM_RBLOCK -> APPLICATION_SDRAM_WBLOCK (SDRAM CS2  @ 0x740xxxxx)
+ *
+ * After all enabled entries are copied, the Loader jumps to entry_point =
+ * 0x00000000, which is the first instruction of the vector table in ATCM
+ * (reset branch).
  *
  * Keep this struct ABI in lockstep with the matching definition in the Loader's
  * src/hal_entry.c (app_manifest_t).
@@ -24,6 +29,8 @@
 
 #include <stdint.h>
 
+#pragma section = "VECTOR_RBLOCK"
+#pragma section = "VECTOR_WBLOCK"
 #pragma section = "APPLICATION_PRG_RBLOCK"
 #pragma section = "APPLICATION_PRG_WBLOCK"
 #pragma section = "APPLICATION_SDRAM_RBLOCK"
@@ -54,12 +61,18 @@ typedef struct
 __root const app_manifest_t g_app_manifest @ ".app_manifest" =
 {
     .magic       = APP_MANIFEST_MAGIC,
-    .entry_count = 2u,
-    .entry_point = 0x10000000u,          /* APPLICATION_PRG_WBLOCK start      */
+    .entry_count = 3u,
+    .entry_point = 0x00000000u,          /* ATCM start (reset vector)         */
     .reserved    = 0u,
     .entries =
     {
-        { /* SRAM copy: FSP, glue code, vectors, .data, .rodata */
+        { /* ATCM copy: vector table */
+            .src   = (uint32_t)__section_begin("VECTOR_RBLOCK"),
+            .dst   = (uint32_t)__section_begin("VECTOR_WBLOCK"),
+            .size  = (uint32_t)__section_size ("VECTOR_RBLOCK"),
+            .flags = 1u,
+        },
+        { /* SystemRAM copy: FSP drivers + application glue + .data/.rodata */
             .src   = (uint32_t)__section_begin("APPLICATION_PRG_RBLOCK"),
             .dst   = (uint32_t)__section_begin("APPLICATION_PRG_WBLOCK"),
             .size  = (uint32_t)__section_size ("APPLICATION_PRG_RBLOCK"),
@@ -71,7 +84,6 @@ __root const app_manifest_t g_app_manifest @ ".app_manifest" =
             .size  = (uint32_t)__section_size ("APPLICATION_SDRAM_RBLOCK"),
             .flags = 1u,
         },
-        { 0u, 0u, 0u, 0u },
         { 0u, 0u, 0u, 0u },
     },
 };
