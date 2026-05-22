@@ -2246,7 +2246,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$/script/fsp_xspi0_boot.icf</state>
+                    <state>$PROJ_DIR$/script/fsp_xspi0_boot_app.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -3538,7 +3538,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$/script/fsp_xspi0_boot.icf</state>
+                    <state>$PROJ_DIR$/script/fsp_xspi0_boot_app.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -4829,7 +4829,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$/script/fsp_xspi0_boot.icf</state>
+                    <state>$PROJ_DIR$/script/fsp_xspi0_boot_app.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
