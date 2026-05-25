@@ -39,15 +39,15 @@
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>1494554611</Checksum>
+        <Checksum>3905809544</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
         <StopOnThrow>_ 0</StopOnThrow>
     </Exceptions>
     <Disassembly>
-        <MixedMode>1</MixedMode>
         <InstrCount>0</InstrCount>
+        <MixedMode>1</MixedMode>
     </Disassembly>
     <CallStack>
         <ShowArgs>0</ShowArgs>
@@ -55,8 +55,8 @@
     <SWOManager>
         <SamplingDivider>8192</SamplingDivider>
         <OverrideClock>0</OverrideClock>
-        <CpuClock>4294967296</CpuClock>
-        <SwoClock>4294967296</SwoClock>
+        <CpuClock>2697298090960</CpuClock>
+        <SwoClock>2697298086704</SwoClock>
         <DataLogMode>0</DataLogMode>
         <ItmPortsEnabled>63</ItmPortsEnabled>
         <ItmTermIOPorts>1</ItmTermIOPorts>
@@ -81,6 +81,19 @@
         <StallCPU>0</StallCPU>
         <NoPCCapture>0</NoPCCapture>
     </ETMTraceWindow>
+    <DriverProfiling>
+        <Enabled>0</Enabled>
+        <Mode>2</Mode>
+        <Graph>0</Graph>
+        <Symbiont>0</Symbiont>
+        <Exclusions />
+    </DriverProfiling>
+    <CallStackLog>
+        <Enabled>0</Enabled>
+    </CallStackLog>
+    <CallStackStripe>
+        <ShowTiming>1</ShowTiming>
+    </CallStackStripe>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>
@@ -104,19 +117,6 @@
         <LiveEnabled>0</LiveEnabled>
         <LiveFile />
     </PowerLog>
-    <DriverProfiling>
-        <Enabled>0</Enabled>
-        <Mode>2</Mode>
-        <Graph>0</Graph>
-        <Symbiont>0</Symbiont>
-        <Exclusions />
-    </DriverProfiling>
-    <CallStackLog>
-        <Enabled>0</Enabled>
-    </CallStackLog>
-    <CallStackStripe>
-        <ShowTiming>1</ShowTiming>
-    </CallStackStripe>
     <PowerProbe>
         <Frequency>10000</Frequency>
         <Probe0>ITrgPwr</Probe0>
@@ -125,6 +125,7 @@
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>
+        <SuppressResolveSourcesForDebugTarget>1</SuppressResolveSourcesForDebugTarget>
     </Aliases>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
@@ -135,7 +136,7 @@
     </DisassembleMode>
     <Breakpoints2>
         <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\src\hal_entry.c}.71.5" 0 0 1 "" 0 "" 0</Bp0>
-        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\RZN2L_bsp_xspi0bootx1_app\rzn\fsp\src\bsp\cmsis\Device\RENESAS\Source\startup.c}.190.5" 0 0 1 "" 0 "" 0</Bp1>
+        <Bp1>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\RZN2L_bsp_xspi0bootx1_app\rzn\fsp\src\bsp\cmsis\Device\RENESAS\Source\startup.c}.190.5" 0 0 1 "" 0 "" 0</Bp1>
         <Count>2</Count>
     </Breakpoints2>
 </settings>

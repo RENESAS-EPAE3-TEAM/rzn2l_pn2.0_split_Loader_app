@@ -160,15 +160,15 @@ void Default_Handler (void)
 BSP_TARGET_ARM BSP_ATTRIBUTE_STACKLESS void system_init (void)
 {
 #if 1 // Software loops are only needed when debugging.
-     __asm volatile (
-         "   mov   r0, #0                         \n"
-         "   movw  r1, #0x68bf                    \n"
-         "   movt  r1, #0x478                     \n"
-         "software_loop:                          \n"
-         "   adds  r0, #1                         \n"
-         "   cmp   r0, r1                         \n"
-         "   bne   software_loop                  \n"
-         ::: "memory");
+    __asm volatile (
+        " mov r0, #0 \n"
+        " movw r1, #0x68bf \n"
+        " movt r1, #0x478 \n"
+        "software_loop: \n"
+        " adds r0, #1 \n"
+        " cmp r0, r1 \n"
+        " bne software_loop \n"
+        ::: "memory");
 #endif
     __asm volatile (
         "set_hactlr:                              \n"
@@ -218,6 +218,8 @@ BSP_TARGET_ARM BSP_ATTRIBUTE_STACKLESS void system_init (void)
         "    MSR   ELR_hyp, r1                    \n"
         "    ERET                                 \n" /* Branch to stack_init and enter EL1 */
         ::: "memory");
+
+        
 }
 
 /** @} (end addtogroup BSP_MCU) */

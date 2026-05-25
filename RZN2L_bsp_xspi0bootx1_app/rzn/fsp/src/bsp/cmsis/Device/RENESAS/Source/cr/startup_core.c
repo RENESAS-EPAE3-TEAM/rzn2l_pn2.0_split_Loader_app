@@ -159,18 +159,9 @@ void Default_Handler (void)
  **********************************************************************************************************************/
 BSP_TARGET_ARM BSP_ATTRIBUTE_STACKLESS void system_init (void)
 {
-#if 1 // Software loops are only needed when debugging.
-    __asm volatile (
-        " mov r0, #0 \n"
-        " movw r1, #0x68bf \n"
-        " movt r1, #0x478 \n"
-        "software_loop: \n"
-        " adds r0, #1 \n"
-        " cmp r0, r1 \n"
-        " bne software_loop \n"
-        ::: "memory");
-#endif
-
+/* These settings are invalid for application project.
+ * The necessary processing has been performed in the loader program. */
+#if 0 // Original program
     __asm volatile (
         "set_hactlr:                              \n"
         "    MOVW  r0, %[bsp_hactlr_bit_l]        \n" /* Set HACTLR bits(L) */
@@ -219,6 +210,21 @@ BSP_TARGET_ARM BSP_ATTRIBUTE_STACKLESS void system_init (void)
         "    MSR   ELR_hyp, r1                    \n"
         "    ERET                                 \n" /* Branch to stack_init and enter EL1 */
         ::: "memory");
+#else
+    /* Set exception vector offset for application program. */
+    __asm volatile (
+        "set_vbar:                                \n"
+        "    LDR   r0, =__Vectors                 \n"
+        "    MCR   p15, #0, r0, c12, c0, #0       \n" /* Write r0 to VBAR */
+        ::: "memory");
+
+    __asm volatile (
+        "jump_stack_init:                         \n"
+        "    LDR   r0, =stack_init                \n"
+        "    BLX   r0                             \n"
+        ::: "memory");
+#endif
+        
 }
 
 /** @} (end addtogroup BSP_MCU) */
