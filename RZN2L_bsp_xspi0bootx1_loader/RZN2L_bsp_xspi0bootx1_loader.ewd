@@ -653,7 +653,7 @@
                 </option>
                 <option>
                     <name>IjetHWResetTimingOverride</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OCDriverInfo</name>
@@ -678,7 +678,7 @@
                 </option>
                 <option>
                     <name>IjetPowerFromProbe</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IjetPowerRadio</name>

@@ -224,6 +224,7 @@
             <path>rzn_gen/vector_data.h</path>
         </group>
         <group name="Program Entry">
+            <path>src/app_manifest.c</path>
             <path>src/ether_config.c</path>
             <path>src/ether_config.h</path>
             <path>src/fsp_mod/r_xspi_qspi.c</path>

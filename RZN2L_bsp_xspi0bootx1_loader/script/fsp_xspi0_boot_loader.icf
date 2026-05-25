@@ -1076,10 +1076,78 @@ define region APPLICATION_ROM_region = mem:[from 0x60100000 size 4M];
 /* ROM block */
 define block LOADER_PARAM_BLOCK { ro section .loader_param };
 define block PRG_RBLOCK with fixed order { ro code section .intvec_init, ro code };
+define block LDR_DATA_RBLOCK with fixed order, alignment = 0x200
+{
+    block LDR_DATA_RBLOCK0  with alignment = 8 { section .data_init   object startup_core.o },
+    block LDR_DATA_RBLOCK1  with alignment = 8 { section .data_init   object system_core.o },
+    block LDR_DATA_RBLOCK2  with alignment = 8 { section .data_init   object startup.o },
+    block LDR_DATA_RBLOCK3  with alignment = 8 { section .data_init   object system.o },
+    block LDR_DATA_RBLOCK4  with alignment = 8 { section .data_init   object bsp_*.o },
+    block LDR_DATA_RBLOCK5  with alignment = 8 { section .data_init   object r_ioport.o },
+    block LDR_DATA_RBLOCK6  with alignment = 8 { section .data_init   object hal_entry.o },
+    block LDR_DATA_RBLOCK7  with alignment = 8 { section .data_init   object pin_data.o },
+    block LDR_DATA_RBLOCK8  with alignment = 8 { section .data_init   object common_data.o },
+    block LDR_DATA_RBLOCK9  with alignment = 8 { section .data_init   object hal_data.o },
+    block LDR_DATA_RBLOCK10 with alignment = 8 { section .data_init   object r_xspi_qspi.o },
+    block LDR_DATA_RBLOCK11 with alignment = 8 { section .rodata_init object bsp_mpu_core.o },
+    block LDR_DATA_RBLOCK12 with alignment = 8 { section .rodata_init object bsp_mmu_core.o },
+    block LDR_DATA_RBLOCK13 with alignment = 8 { section .rodata_init object bsp_tzc400.o },
+    block LDR_DATA_RBLOCK14 with alignment = 8 { section .rodata_init object bsp_register_protection.o },
+    block LDR_DATA_RBLOCK15 with alignment = 8 { section .warm_start.data*_init },
+    block LDR_DATA_RBLOCK16 with alignment = 8 { section .rodata_init object bsp_*.o },
+    block LDR_DATA_RBLOCK17 with alignment = 8 { section .rodata_init object r_ioport.o },
+    block LDR_DATA_RBLOCK18 with alignment = 8 { section .rodata_init object hal_entry.o },
+    block LDR_DATA_RBLOCK19 with alignment = 8 { section .rodata_init object pin_data.o },
+    block LDR_DATA_RBLOCK20 with alignment = 8 { section .rodata_init object common_data.o },
+    block LDR_DATA_RBLOCK21 with alignment = 8 { section .rodata_init object hal_data.o },
+    block LDR_DATA_RBLOCK22 with alignment = 8 { section .rodata_init object r_xspi_qspi.o }
+};
 define block USER_DATA_RBLOCK with fixed order { section .data_init, section __DLIB_PERTHREAD_init, section .rodata_init, section .version_init };
 
 /* RAM block */
 define block PRG_WBLOCK with fixed order { rw code section .intvec, rw code };
+define block LDR_DATA_WBLOCK with fixed order, alignment = 0x200
+{
+    block LDR_DATA_WBLOCK0  with alignment = 8 { section .data   object startup_core.o },
+    block LDR_DATA_WBLOCK1  with alignment = 8 { section .data   object system_core.o },
+    block LDR_DATA_WBLOCK2  with alignment = 8 { section .data   object startup.o },
+    block LDR_DATA_WBLOCK3  with alignment = 8 { section .data   object system.o },
+    block LDR_DATA_WBLOCK4  with alignment = 8 { section .data   object bsp_*.o },
+    block LDR_DATA_WBLOCK5  with alignment = 8 { section .data   object r_ioport.o },
+    block LDR_DATA_WBLOCK6  with alignment = 8 { section .data   object hal_entry.o },
+    block LDR_DATA_WBLOCK7  with alignment = 8 { section .data   object pin_data.o },
+    block LDR_DATA_WBLOCK8  with alignment = 8 { section .data   object common_data.o },
+    block LDR_DATA_WBLOCK9  with alignment = 8 { section .data   object hal_data.o },
+    block LDR_DATA_WBLOCK10 with alignment = 8 { section .data   object r_xspi_qspi.o },
+    block LDR_DATA_WBLOCK11 with alignment = 8 { section .rodata object bsp_mpu_core.o },
+    block LDR_DATA_WBLOCK12 with alignment = 8 { section .rodata object bsp_mmu_core.o },
+    block LDR_DATA_WBLOCK13 with alignment = 8 { section .rodata object bsp_tzc400.o },
+    block LDR_DATA_WBLOCK14 with alignment = 8 { section .rodata object bsp_register_protection.o },
+    block LDR_DATA_WBLOCK15 with alignment = 8 { section .warm_start.data* },
+    block LDR_DATA_WBLOCK16 with alignment = 8 { section .rodata object bsp_*.o },
+    block LDR_DATA_WBLOCK17 with alignment = 8 { section .rodata object r_ioport.o },
+    block LDR_DATA_WBLOCK18 with alignment = 8 { section .rodata object hal_entry.o },
+    block LDR_DATA_WBLOCK19 with alignment = 8 { section .rodata object pin_data.o },
+    block LDR_DATA_WBLOCK20 with alignment = 8 { section .rodata object common_data.o },
+    block LDR_DATA_WBLOCK21 with alignment = 8 { section .rodata object hal_data.o },
+    block LDR_DATA_WBLOCK22 with alignment = 8 { section .rodata object r_xspi_qspi.o }
+};
+define block LDR_DATA_ZBLOCK with alignment = 8
+{
+    section .bss object startup_core.o,
+    section .bss object system_core.o,
+    section .bss object startup.o,
+    section .bss object system.o,
+    section .bss object bsp_*.o,
+    section .bss object r_ioport.o,
+    section .bss object hal_entry.o,
+    section .bss object pin_data.o,
+    section .bss object common_data.o,
+    section .bss object hal_data.o,
+    section .bss object r_xspi_qspi.o,
+    section .warm_start.bss*,
+    section .ttbr
+};
 define block USER_DATA_WBLOCK with fixed order { section .data, section __DLIB_PERTHREAD, section .rodata, section .version };
 define block USER_DATA_ZBLOCK { section .bss };
 
@@ -1124,8 +1192,12 @@ place in APPLICATION_RAM_region { block APPLICATION_PRG_WBLOCK };
 
 place in LDR_PARAM_region { block LOADER_PARAM_BLOCK};
 place at start of ROM_region { block PRG_RBLOCK,
+                               block LDR_DATA_RBLOCK,
                                block USER_DATA_RBLOCK,
                                ro data };
+
+place in BTCM_region { block LDR_DATA_WBLOCK };
+place in BTCM_region { block LDR_DATA_ZBLOCK };
 
 place in APPLICATION_ROM_region { block APPLICATION_PRG_RBLOCK };
 

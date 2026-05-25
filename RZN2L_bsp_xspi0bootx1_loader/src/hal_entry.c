@@ -10,6 +10,7 @@ FSP_CPP_FOOTER
 extern bsp_leds_t g_bsp_leds;
 extern void bsp_copy_multibyte(uintptr_t * src, uintptr_t * dst, uintptr_t bytesize);
 extern const loader_table table[TABLE_ENTRY_NUM];
+extern void R_BSP_CacheCleanInvalidateAll(void);
 
 /*--- Application image manifest (must match App's src/app_manifest.c) ------*/
 #define APP_MANIFEST_ADDR     (0x60100000u)
@@ -124,6 +125,10 @@ void hal_entry(void)
 
     /* Delay */
     R_BSP_SoftwareDelay(1000, BSP_DELAY_UNITS_MILLISECONDS);
+
+    R_BSP_CacheCleanInvalidateAll();
+    __asm volatile("dsb");
+    __asm volatile("isb");
 
     /* Jump to the application project */
     app_prg();

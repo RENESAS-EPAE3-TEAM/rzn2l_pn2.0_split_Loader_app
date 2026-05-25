@@ -30,6 +30,8 @@ C:\iar\ewarm-9.70.2\arm\config\debugger\Renesas\R9A07G084M04.ddf
 
 "--reset_style=\"5,ResetHandler_Custom,0,Custom\""
 
+--jet_power_from_probe=leave_on
+
 --drv_interface=SWD
 
 --jet_board_cfg=C:\iar\ewarm-9.70.2\arm/config/debugger/Renesas/RZN2L.ProbeConfig
