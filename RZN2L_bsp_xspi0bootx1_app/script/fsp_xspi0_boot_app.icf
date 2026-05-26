@@ -28,6 +28,10 @@
  *   ATCM           0x00000000 - 0x0001FFFF  (128 KB)
  *      VECTOR_WBLOCK  (reset vector + 15 exception vectors)
  *
+ *   BTCM           0x00100000 - 0x0011FFFF  (128 KB)
+ *      0x00103F88  ARM32_STACK (exception mode stacks: SYS/SVC/IRQ/FIQ/UND/ABT)
+ *                  SVC_STACK at 0x00104388, matching source project layout
+ *
  *   SystemRAM      0x10000000 - 0x1017FFFF  (1.5 MB)
  *      0x10000100  USER_PRG_WBLOCK + USER_DATA_WBLOCK    (USER_APP_region)
  *      0x10130000  TASKSTACK_BLOCK                       (TASK_STACK_region)
@@ -36,7 +40,7 @@
  *   SDRAM CS2 cacheable  0x74000000 - 0x77FFFFFF (32 MB W9825G6KH-6)
  *      0x74000000  APPLICATION_SDRAM_WBLOCK (obsd data/code)
  *                  + USER_DATA_ZBLOCK + EXT_DATA_ZBLOCK
- *                  + NOINIT_BLOCK + ARM32_STACK + AARCH64_STACK + THREAD_STACK
+ *                  + NOINIT_BLOCK + AARCH64_STACK + THREAD_STACK
  *                                                          (RAM_region, 2 MB)
  *      0x74200000  HEAP_BLOCK + HEAP4_BLOCK                (HEAP_region, 2 MB)
  *      0x75D00000  EXTRAMNC_BLOCK (mirrored to 0x55D00000 noncache view)
@@ -64,6 +68,9 @@ define symbol APP_MANIFEST_SIZE        = 0x00000050;       /* see app_manifest.c
 
 define symbol INTVEC_ADDRESS           = ATCM_CR52_0_START;       /* 0x00000000  */
 define symbol ATCM_REGION_SIZE         = ATCM_CR52_0_LENGTH;      /* 0x00020000  */
+
+define symbol ARM32_STACK_START        = BTCM_CR52_0_START + 0x00003F88;
+define symbol ARM32_STACK_END          = ARM32_STACK_START + 0x000017FF;
 
 define symbol USER_APP_START           = 0x10000100;
 define symbol USER_APP_END             = 0x1012FFFF;
@@ -100,6 +107,7 @@ define memory mem with size = 4G;
 define region APP_PARAM_region       = mem:[from APP_FLASH_START                     size APP_MANIFEST_SIZE];
 define region ROM_region             = mem:[from APP_FLASH_START + APP_MANIFEST_SIZE  size APP_FLASH_SIZE - APP_MANIFEST_SIZE];
 define region ATCM_region            = mem:[from INTVEC_ADDRESS                      size ATCM_REGION_SIZE];
+define region ARM32_STACK_region     = mem:[from ARM32_STACK_START                   to   ARM32_STACK_END];
 define region USER_APP_region        = mem:[from USER_APP_START                      to   USER_APP_END];
 define region TASK_STACK_region      = mem:[from TASK_STACK_START                    to   TASK_STACK_END];
 define region RAM_region             = mem:[from RAM_region_START                    to   RAM_region_END];
@@ -359,13 +367,16 @@ place at start of ATCM_region      { block VECTOR_WBLOCK };
 
 place in USER_APP_region           { block APPLICATION_PRG_WBLOCK };
 
+place at start of ARM32_STACK_region
+                                   { block ARM32_STACK };
+
 place in TASK_STACK_region         { block TASKSTACK_BLOCK };
 
 /*-----------------------------------------------------------------------------*/
 /*  SDRAM (CS2 cacheable)                                                      */
 /*    RAM_region [0x74000000, 0x741FFFFF]:                                     */
 /*      APPLICATION_SDRAM_WBLOCK (obsd data/code)                              */
-/*      + zero-init blocks + AArch32/64/thread stacks                          */
+/*      + zero-init blocks + AArch64/thread stacks                             */
 /*    HEAP_region [0x74200000, 0x743FFFFF]:                                    */
 /*      HEAP_BLOCK + HEAP4_BLOCK                                               */
 /*    EXTRAM_NC_INIT_region [0x75D00000, 0x75FFFFFF]:                          */
@@ -378,7 +389,6 @@ place in RAM_region
     block USER_DATA_ZBLOCK,
     block EXT_DATA_ZBLOCK,
     block NOINIT_BLOCK,
-    block ARM32_STACK,
     block AARCH64_STACK,
     block THREAD_STACK
 };

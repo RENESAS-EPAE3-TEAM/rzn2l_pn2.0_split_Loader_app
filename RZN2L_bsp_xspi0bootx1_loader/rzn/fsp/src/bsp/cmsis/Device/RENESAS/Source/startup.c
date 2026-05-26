@@ -185,7 +185,9 @@ void SystemInit (void)
     bsp_tfu_init();
  #endif
 #endif
-
+    
+    //*(volatile uint32_t *)0x74000000 = 0x12345678;
+    
     /* Jump to main. */
     main();
 }

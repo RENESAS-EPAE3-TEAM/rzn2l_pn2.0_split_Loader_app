@@ -19,9 +19,9 @@
  *    APPLICATION_PRG_RBLOCK   -> APPLICATION_PRG_WBLOCK   (SystemRAM  @ 0x10000100)
  *    APPLICATION_SDRAM_RBLOCK -> APPLICATION_SDRAM_WBLOCK (SDRAM CS2  @ 0x740xxxxx)
  *
- * After all enabled entries are copied, the Loader jumps to entry_point =
- * 0x00000000, which is the first instruction of the vector table in ATCM
- * (reset branch).
+ * After all enabled entries are copied, the Loader jumps to entry_point.
+ * This uses system_init directly because the PROFINET SDK provides a strong
+ * Reset_Handler that only continues during a software reset path.
  *
  * Keep this struct ABI in lockstep with the matching definition in the Loader's
  * src/hal_entry.c (app_manifest_t).
@@ -38,6 +38,8 @@
 
 #define APP_MANIFEST_MAGIC   0x50415A52u   /* 'RZAP' little-endian */
 #define APP_MANIFEST_ENTRIES 4
+
+extern void system_init(void);
 
 typedef struct
 {
@@ -62,7 +64,7 @@ __root const app_manifest_t g_app_manifest @ ".app_manifest" =
 {
     .magic       = APP_MANIFEST_MAGIC,
     .entry_count = 3u,
-    .entry_point = 0x00000000u,          /* ATCM start (reset vector)         */
+    .entry_point = (uint32_t)system_init,
     .reserved    = 0u,
     .entries =
     {

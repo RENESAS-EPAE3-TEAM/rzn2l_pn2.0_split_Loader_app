@@ -286,9 +286,10 @@ void handle_error (fsp_err_t err)
 void R_BSP_WarmStart (bsp_warm_start_event_t event)
 {
     /* NOTE: BSP_WARM_START_POST_LOADER hook is handled by the Loader
-     * project (RZN2L_bsp_xspi0bootx1_loader). It performs IOPORT_Open,
+     * project (RZN2L_bsp_xspi0bootx1_loader). It performs board pin setup,
      * external SDRAM/HyperRAM init and (when needed) QSPI Quad-Enable.
-     * The application has no work to do at POST_LOADER. */
+     * The application opens its own IOPORT control block after its external
+     * RAM data/BSS sections are initialized. */
 
     if (BSP_WARM_START_RESET == event)
     {
@@ -306,19 +307,22 @@ void R_BSP_WarmStart (bsp_warm_start_event_t event)
  #endif
 #endif
 
-#if 0
-        if (NULL != g_bsp_pin_cfg.p_extend)
-        {
-            /* Configure pins. */
-            R_IOPORT_Open(&IOPORT_CFG_CTRL, &IOPORT_CFG_NAME);
-        }
-#endif
-
-        /* External RAM (SDRAM/HyperRAM) is initialized by the Loader
-         * (SSBL) before jumping to the application, so no init call here. */
+        /* External RAM (SDRAM/HyperRAM) and the App image sections are
+         * initialized by the Loader (SSBL) before jumping to the application.
+         * Only clear runtime zero-init/no-init work areas here. */
 
         bsp_clear_external_bss_sections();
+
+    #if 0
+        /* Loader manifest already copied APPLICATION_SDRAM_RBLOCK to
+         * APPLICATION_SDRAM_WBLOCK before jumping to the App. */
         bsp_copy_to_external_ram();
+    #endif
+
+        if (NULL != g_bsp_pin_cfg.p_extend)
+        {
+            R_IOPORT_Open(&IOPORT_CFG_CTRL, &IOPORT_CFG_NAME);
+        }
     }
 }
 

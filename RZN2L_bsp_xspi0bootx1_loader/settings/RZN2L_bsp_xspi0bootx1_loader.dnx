@@ -39,7 +39,7 @@
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>813186376</Checksum>
+        <Checksum>551484628</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -55,8 +55,8 @@
     <SWOManager>
         <SamplingDivider>8192</SamplingDivider>
         <OverrideClock>0</OverrideClock>
-        <CpuClock>848822976775168</CpuClock>
-        <SwoClock>285873023222784</SwoClock>
+        <CpuClock>2377022487168</CpuClock>
+        <SwoClock>2377022492320</SwoClock>
         <DataLogMode>0</DataLogMode>
         <ItmPortsEnabled>63</ItmPortsEnabled>
         <ItmTermIOPorts>1</ItmTermIOPorts>
@@ -136,9 +136,12 @@
         <Bp1>_ 0 "EMUL_CODE" "{$PROJ_DIR$\rzn\fsp\src\bsp\cmsis\Device\RENESAS\Source\startup.c}.132.5" 0 0 1 "" 0 "" 0</Bp1>
         <Bp2>_ 0 "EMUL_CODE" "{$PROJ_DIR$\rzn\fsp\src\bsp\mcu\all\bsp_cache.c}.108.5" 0 0 1 "" 0 "" 0</Bp2>
         <Bp3>_ 0 "EMUL_DATA" "table[table_num]" 0 0 0 0 4294967295</Bp3>
-        <Bp4>_ 1 "EMUL_CODE" "{$PROJ_DIR$\src\hal_entry.c}.134.1" 0 0 1 "" 0 "" 0</Bp4>
-        <Bp5>_ 1 "EMUL_CODE" "{$PROJ_DIR$\src\hal_entry.c}.100.1" 0 0 1 "" 0 "" 0</Bp5>
-        <Count>6</Count>
+        <Bp4>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\RZN2L_bsp_xspi0bootx1_app\src\fsp_mod\startup.c}.206.5" 0 0 1 "" 0 "" 0</Bp4>
+        <Bp5>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\application\App1_STANDARD\usriod_main.c}.578.3" 0 0 1 "" 0 "" 0</Bp5>
+        <Bp6>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\application\App_common\PnUsr_Api.c}.743.6" 0 0 1 "" 0 "" 0</Bp6>
+        <Bp7>_ 1 "EMUL_CODE" "{$PROJ_DIR$\src\hal_entry.c}.131.5" 0 0 1 "" 0 "" 0</Bp7>
+        <Bp8>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\profinet_sdk\src\pns\rtos\rtos_os_2.c}.934.15" 0 0 1 "" 0 "" 0</Bp8>
+        <Count>9</Count>
     </Breakpoints2>
     <PowerProbe>
         <Frequency>10000</Frequency>
