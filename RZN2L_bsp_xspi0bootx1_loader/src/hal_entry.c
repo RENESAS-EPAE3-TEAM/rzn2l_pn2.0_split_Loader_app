@@ -15,7 +15,7 @@ extern void R_BSP_CacheCleanInvalidateAll(void);
 /*--- Application image manifest (must match App's src/app_manifest.c) ------*/
 #define APP_MANIFEST_ADDR     (0x60100000u)
 #define APP_MANIFEST_MAGIC    (0x50415A52u)  /* 'RZAP' */
-#define APP_MANIFEST_ENTRIES  (4)
+#define APP_MANIFEST_ENTRIES  (7)
 
 typedef struct
 {
@@ -72,10 +72,9 @@ void hal_entry(void)
     R_BSP_PortWrite(BSP_IO_REGION_SAFE, BSP_IO_PORT_18, (pin_level | 1U << 2));
 
     /* Read the App's manifest from the well-known flash address. The App's
-     * ICF (script/fsp_xspi0_boot_app.icf) places .app_manifest at
-     * APP_MANIFEST_ADDR; the linker fills in src/dst/size from the App's
-     * APPLICATION_PRG_RBLOCK/WBLOCK and APPLICATION_SDRAM_RBLOCK/WBLOCK
-     * super-blocks. We copy each enabled entry and then jump to entry_point. */
+     * ICF places .app_manifest at APP_MANIFEST_ADDR and fills src/dst/size
+     * from source-compatible App block pairs such as USER_PRG_RBLOCK/WBLOCK,
+     * SYSTEM_PRG_RBLOCK/WBLOCK and NONCACHE_RBLOCK/WBLOCK. */
     const app_manifest_t * manifest = (const app_manifest_t *) APP_MANIFEST_ADDR;
 
     if (APP_MANIFEST_MAGIC == manifest->magic)

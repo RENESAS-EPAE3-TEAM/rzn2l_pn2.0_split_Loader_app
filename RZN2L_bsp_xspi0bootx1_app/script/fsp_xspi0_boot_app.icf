@@ -7,20 +7,18 @@
  * the ATCM-defined + no-USE_HRAM configuration (which is what RZN2L EK52
  * with PROFINET-IRT actually compiles into).
  *
- * Three super-blocks are exposed to the Loader through .app_manifest:
+ * Source-compatible blocks are exposed to the Loader through .app_manifest:
  *
  *   APP image in xSPI0 flash @ 0x60100000               Loader copies to
  *   --------------------------------------               -----------------
- *   [.app_manifest 0x50 bytes]                           (read in place)
+ *   [.app_manifest 0x80 bytes]                           (read in place)
  *   [VECTOR_RBLOCK]      vector table init       ----->  ATCM @ 0x00000000
- *   [APPLICATION_PRG_RBLOCK]                             USER_APP_region
- *      USER_PRG_RBLOCK   ro code (FSP + app glue)          (SystemRAM
- *      USER_DATA_RBLOCK  .rodata_init / .data_init /        0x10000100 ...
- *                        __DLIB_PERTHREAD_init /            0x1012FFFF)
- *                        .version_init
- *   [APPLICATION_SDRAM_RBLOCK]                           RAM_region (SDRAM
- *      SYSTEM_DATA_RBLOCK obsd*.o .rodata/.data inits      0x74000000 ...
- *      SYSTEM_PRG_RBLOCK obsd*.o ro code                   0x741FFFFF)
+ *   [USER_PRG_RBLOCK]    ro code                  ----->  USER_PRG_WBLOCK
+ *   [USER_DATA_RBLOCK]   .rodata/.data inits      ----->  USER_DATA_WBLOCK
+ *   [SYSTEM_PRG_RBLOCK]  obsd*.o ro code          ----->  SYSTEM_PRG_WBLOCK
+ *   [SYSTEM_DATA_RBLOCK] obsd*.o data inits       ----->  SYSTEM_DATA_WBLOCK
+ *   [NONCACHE_RBLOCK]    initialized noncache     ----->  NONCACHE_WBLOCK
+ *   [SHARED_NONCACHE_BUFFER_RBLOCK]               ----->  SHARED_NONCACHE_BUFFER_WBLOCK
  *   [readonly catch-all]                                 (read in place)
  *
  * Runtime layout (after Loader has finished copying and jumped to 0x00):
@@ -35,13 +33,14 @@
  *   SystemRAM      0x10000000 - 0x1017FFFF  (1.5 MB)
  *      0x10000100  USER_PRG_WBLOCK + USER_DATA_WBLOCK    (USER_APP_region)
  *      0x10130000  TASKSTACK_BLOCK                       (TASK_STACK_region)
- *      0x10150000  -------- unused -------------
+ *      0x10150000  SHARED_NONCACHE_BUFFER_*              (source-compatible)
+ *      0x10160000  NONCACHE_ZBLOCK / NONCACHE_WBLOCK     (.noncache_buffer*)
  *
  *   SDRAM CS2 cacheable  0x74000000 - 0x77FFFFFF (32 MB W9825G6KH-6)
- *      0x74000000  APPLICATION_SDRAM_WBLOCK (obsd data/code)
- *                  + USER_DATA_ZBLOCK + EXT_DATA_ZBLOCK
+ *      0x74000000  USER_DATA_ZBLOCK + EXT_DATA_ZBLOCK
  *                  + NOINIT_BLOCK + AARCH64_STACK + THREAD_STACK
  *                                                          (RAM_region, 2 MB)
+ *                  + SYSTEM_PRG_WBLOCK + SYSTEM_DATA_WBLOCK
  *      0x74200000  HEAP_BLOCK + HEAP4_BLOCK                (HEAP_region, 2 MB)
  *      0x75D00000  EXTRAMNC_BLOCK (mirrored to 0x55D00000 noncache view)
  *
@@ -56,7 +55,7 @@ include "memory_regions.icf";
 define symbol APP_FLASH_START          = 0x60100000;
 define symbol APP_FLASH_SIZE           = 0x00400000;       /* 4 MB           */
 
-define symbol APP_MANIFEST_SIZE        = 0x00000050;       /* see app_manifest.c */
+define symbol APP_MANIFEST_SIZE        = 0x00000080;       /* see app_manifest.c */
 
 /* Mirrors source's "ATCM defined, no USE_HRAM" branch:                       */
 /*   INTVEC_ADDRESS = ATCM_PRV_START                                          */
@@ -89,6 +88,14 @@ define symbol RAM_region_END           = CS2_BASE + 0x001FFFFF;                 
 define symbol HEAP_region_START        = 0x74200000;
 define symbol HEAP_region_END          = 0x743FFFFF;
 
+define symbol NONCACHE_INIT_START      = 0x10160000;
+define symbol NONCACHE_INIT_END        = 0x1017FFFF;
+define symbol NONCACHE_RUNTIME_START   = 0x30160000;
+
+define symbol SHARED_NONCACHE_INIT_START    = 0x10150000;
+define symbol SHARED_NONCACHE_INIT_END      = 0x1015FFFF;
+define symbol SHARED_NONCACHE_RUNTIME_START = 0x30150000;
+
 /* EXTRAM_NC runtime sits at the TOP 3 MB of physical SDRAM via the noncache  */
 /* CS2 mirror (0x54000000 = CS2 - 0x20000000). The init image lives at the    */
 /* same physical SDRAM cells viewed through the cached alias, so IAR can      */
@@ -112,6 +119,8 @@ define region USER_APP_region        = mem:[from USER_APP_START                 
 define region TASK_STACK_region      = mem:[from TASK_STACK_START                    to   TASK_STACK_END];
 define region RAM_region             = mem:[from RAM_region_START                    to   RAM_region_END];
 define region HEAP_region            = mem:[from HEAP_region_START                   to   HEAP_region_END];
+define region NONCACHE_INIT_region   = mem:[from NONCACHE_INIT_START                 to   NONCACHE_INIT_END];
+define region SHARED_NONCACHE_BUFFER_INIT_region = mem:[from SHARED_NONCACHE_INIT_START to SHARED_NONCACHE_INIT_END];
 define region EXTRAM_NC_INIT_region  = mem:[from EXTRAM_NC_C_START                   size EXTRAM_NC_SIZE];
 
 /*=============================================================================*/
@@ -282,40 +291,33 @@ define block HEAP4_BLOCK  with alignment = 4 { section .bss object heap_4.o };
 define block EXTRAMNC_BLOCK with alignment = 32 { section nocache, section uncached_mem };
 
 /*-----------------------------------------------------------------------------*/
-/*  Super-blocks consumed by the Loader's app_manifest                         */
-/*                                                                             */
-/*  The Loader copies them as opaque byte blobs:                               */
-/*    memcpy(__section_begin("VECTOR_WBLOCK"),                                 */
-/*           __section_begin("VECTOR_RBLOCK"),                                 */
-/*           __section_size ("VECTOR_RBLOCK"));                                */
-/*  and similarly for APPLICATION_PRG_* and APPLICATION_SDRAM_*.               */
-/*                                                                             */
-/*  Sub-block order in RBLOCK and WBLOCK MUST match.                           */
+/*  NONCACHE blocks, matching source rzn2l_xspi_boot.icf naming.              */
 /*-----------------------------------------------------------------------------*/
 
-define block APPLICATION_PRG_RBLOCK with fixed order, alignment = 8
+define block NONCACHE_RBLOCK with fixed order, alignment = 32
 {
-    block USER_PRG_RBLOCK,
-    block USER_DATA_RBLOCK
+    block USER_DATA_NONCACHE_RBLOCK with alignment = 8 { section .data_noncache*_init },
+    block DMAC_LINK_MODE_RBLOCK with alignment = 8 { section .dmac_link_mode*_init },
+    block NONCACHE_BUFFER_RBLOCK with alignment = 32 { section .noncache_buffer*_init }
 };
 
-define block APPLICATION_PRG_WBLOCK with fixed order, alignment = 8
+define block NONCACHE_WBLOCK with fixed order
 {
-    block USER_PRG_WBLOCK,
-    block USER_DATA_WBLOCK
+    block USER_DATA_NONCACHE_WBLOCK with alignment = 8 { section .data_noncache* },
+    block DMAC_LINK_MODE_WBLOCK with alignment = 8 { section .dmac_link_mode* },
+    block NONCACHE_BUFFER_WBLOCK with alignment = 32 { section .noncache_buffer* }
 };
 
-define block APPLICATION_SDRAM_RBLOCK with fixed order, alignment = 8
+define block NONCACHE_ZBLOCK with fixed order
 {
-    block SYSTEM_DATA_RBLOCK,
-    block SYSTEM_PRG_RBLOCK
+    block USER_DATA_NONCACHE_ZBLOCK with alignment = 8 { zi section .data_noncache* },
+    block DMAC_LINK_MODE_ZBLOCK with alignment = 8 { zi section .dmac_link_mode* },
+    block NONCACHE_BUFFER_ZBLOCK with alignment = 32 { zi section .noncache_buffer* }
 };
 
-define block APPLICATION_SDRAM_WBLOCK with fixed order, alignment = 8
-{
-    block SYSTEM_DATA_WBLOCK,
-    block SYSTEM_PRG_WBLOCK
-};
+define block SHARED_NONCACHE_BUFFER_RBLOCK with alignment = 32 { section .shared_noncache_buffer*_init };
+define block SHARED_NONCACHE_BUFFER_WBLOCK with alignment = 32 { section .shared_noncache_buffer* };
+define block SHARED_NONCACHE_BUFFER_ZBLOCK with alignment = 32 { zi section .shared_noncache_buffer* };
 
 /*=============================================================================*/
 /*  S P E C I F Y I N G   I N I T I A L I Z A T I O N                          */
@@ -328,6 +330,10 @@ initialize manually
     section __DLIB_PERTHREAD,
     section .rodata,
     section .version,
+    section .data_noncache*,
+    section .dmac_link_mode*,
+    section .noncache_buffer*,
+    section .shared_noncache_buffer*,
     section .data_extramnc*
 };
 
@@ -340,19 +346,26 @@ do not initialize { zeroinit, section .noinit };
 /*-----------------------------------------------------------------------------*/
 /*  Flash (xSPI0 CS0)                                                          */
 /*  Order:                                                                     */
-/*    [0x60100000] .app_manifest    (80 bytes, read in place by Loader)        */
-/*    [0x60100050] VECTOR_RBLOCK    (vector table init image)                  */
-/*                APPLICATION_PRG_RBLOCK   (FSP + app glue + .data/.rodata)    */
-/*                APPLICATION_SDRAM_RBLOCK (obsd*.o PROFINET data + code)      */
+/*    [0x60100000] .app_manifest    (128 bytes, read in place by Loader)       */
+/*    [0x60100080] VECTOR_RBLOCK    (vector table init image)                  */
+/*                USER_PRG_RBLOCK / USER_DATA_RBLOCK                           */
+/*                SYSTEM_PRG_RBLOCK / SYSTEM_DATA_RBLOCK                       */
+/*                NONCACHE_RBLOCK / SHARED_NONCACHE_BUFFER_RBLOCK              */
 /*                readonly catch-all                                           */
 /*-----------------------------------------------------------------------------*/
 
 place in APP_PARAM_region          { readonly section .app_manifest };
 
 place at start of ROM_region       { block VECTOR_RBLOCK };
-place in ROM_region                { block APPLICATION_PRG_RBLOCK };
-place in ROM_region                { block APPLICATION_SDRAM_RBLOCK };
-place in ROM_region                { readonly };
+place in ROM_region                {
+    block USER_PRG_RBLOCK,
+    block USER_DATA_RBLOCK,
+    block SYSTEM_PRG_RBLOCK,
+    block SYSTEM_DATA_RBLOCK,
+    readonly,
+    block NONCACHE_RBLOCK,
+    block SHARED_NONCACHE_BUFFER_RBLOCK
+};
 
 /*-----------------------------------------------------------------------------*/
 /*  ATCM @ 0x00000000   (vector table runtime location, matches source ATCM    */
@@ -365,7 +378,8 @@ place at start of ATCM_region      { block VECTOR_WBLOCK };
 /*  SystemRAM   USER_APP_region = 0x10000100 - 0x1012FFFF                      */
 /*-----------------------------------------------------------------------------*/
 
-place in USER_APP_region           { block APPLICATION_PRG_WBLOCK };
+place in USER_APP_region           { block USER_PRG_WBLOCK };
+place in USER_APP_region           { block USER_DATA_WBLOCK };
 
 place at start of ARM32_STACK_region
                                    { block ARM32_STACK };
@@ -375,17 +389,17 @@ place in TASK_STACK_region         { block TASKSTACK_BLOCK };
 /*-----------------------------------------------------------------------------*/
 /*  SDRAM (CS2 cacheable)                                                      */
 /*    RAM_region [0x74000000, 0x741FFFFF]:                                     */
-/*      APPLICATION_SDRAM_WBLOCK (obsd data/code)                              */
-/*      + zero-init blocks + AArch64/thread stacks                             */
+/*      zero-init blocks + AArch64/thread stacks + SYSTEM_PRG/DATA_WBLOCK      */
 /*    HEAP_region [0x74200000, 0x743FFFFF]:                                    */
 /*      HEAP_BLOCK + HEAP4_BLOCK                                               */
 /*    EXTRAM_NC_INIT_region [0x75D00000, 0x75FFFFFF]:                          */
 /*      EXTRAMNC_BLOCK (mirrored to 0x55D00000 noncache view)                  */
 /*-----------------------------------------------------------------------------*/
 
+place at start of RAM_region       { readwrite };
+
 place in RAM_region
 {
-    block APPLICATION_SDRAM_WBLOCK,
     block USER_DATA_ZBLOCK,
     block EXT_DATA_ZBLOCK,
     block NOINIT_BLOCK,
@@ -393,7 +407,19 @@ place in RAM_region
     block THREAD_STACK
 };
 
+place in RAM_region                { block SYSTEM_PRG_WBLOCK };
+place in RAM_region                { block SYSTEM_DATA_WBLOCK };
+
 place in HEAP_region               { block HEAP_BLOCK, block HEAP4_BLOCK };
+
+place in NONCACHE_INIT_region with mirroring to NONCACHE_RUNTIME_START
+                                   { block NONCACHE_WBLOCK };
+place in NONCACHE_INIT_region      { block NONCACHE_ZBLOCK };
+
+place in SHARED_NONCACHE_BUFFER_INIT_region with mirroring to SHARED_NONCACHE_RUNTIME_START
+                                   { block SHARED_NONCACHE_BUFFER_WBLOCK };
+place in SHARED_NONCACHE_BUFFER_INIT_region
+                                   { block SHARED_NONCACHE_BUFFER_ZBLOCK };
 
 place in EXTRAM_NC_INIT_region with mirroring to EXTRAM_NC_NC_START
                                    { block EXTRAMNC_BLOCK };
@@ -408,4 +434,5 @@ define exported symbol __region_USER_APP_start__   = USER_APP_START;
 define exported symbol __region_TASK_STACK_start__ = TASK_STACK_START;
 define exported symbol __region_RAM_start__        = RAM_region_START;
 define exported symbol __region_HEAP_start__       = HEAP_region_START;
+define exported symbol __region_NONCACHE_start__   = NONCACHE_RUNTIME_START;
 define exported symbol __region_EXTRAM_NC_start__  = EXTRAM_NC_NC_START;

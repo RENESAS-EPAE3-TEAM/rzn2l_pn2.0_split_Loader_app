@@ -7,7 +7,7 @@
  * The Loader cannot resolve App-side link-time symbols (the two projects are
  * built and linked independently). To bridge this, the App publishes a small
  * manifest struct at a known physical address in xSPI flash
- * (APP_MANIFEST_ADDR = 0x60100000, 0x50 bytes). The Loader's hal_entry()
+ * (APP_MANIFEST_ADDR = 0x60100000, 0x80 bytes). The Loader's hal_entry()
  * reads it directly via that pointer, then performs the listed memcpy()s and
  * jumps to entry_point.
  *
@@ -15,9 +15,13 @@
  * __section_begin / __section_size intrinsics on the blocks defined in
  * script/fsp_xspi0_boot_app.icf:
  *
- *    VECTOR_RBLOCK            -> VECTOR_WBLOCK            (ATCM       @ 0x00000000)
- *    APPLICATION_PRG_RBLOCK   -> APPLICATION_PRG_WBLOCK   (SystemRAM  @ 0x10000100)
- *    APPLICATION_SDRAM_RBLOCK -> APPLICATION_SDRAM_WBLOCK (SDRAM CS2  @ 0x740xxxxx)
+ *    VECTOR_RBLOCK                  -> VECTOR_WBLOCK                  (ATCM)
+ *    USER_PRG_RBLOCK                -> USER_PRG_WBLOCK                (SystemRAM)
+ *    USER_DATA_RBLOCK               -> USER_DATA_WBLOCK               (SystemRAM)
+ *    SYSTEM_PRG_RBLOCK              -> SYSTEM_PRG_WBLOCK              (SDRAM CS2)
+ *    SYSTEM_DATA_RBLOCK             -> SYSTEM_DATA_WBLOCK             (SDRAM CS2)
+ *    NONCACHE_RBLOCK                -> NONCACHE_WBLOCK                (SystemRAM noncache mirror)
+ *    SHARED_NONCACHE_BUFFER_RBLOCK  -> SHARED_NONCACHE_BUFFER_WBLOCK  (SystemRAM noncache mirror)
  *
  * After all enabled entries are copied, the Loader jumps to entry_point.
  * This uses system_init directly because the PROFINET SDK provides a strong
@@ -31,13 +35,21 @@
 
 #pragma section = "VECTOR_RBLOCK"
 #pragma section = "VECTOR_WBLOCK"
-#pragma section = "APPLICATION_PRG_RBLOCK"
-#pragma section = "APPLICATION_PRG_WBLOCK"
-#pragma section = "APPLICATION_SDRAM_RBLOCK"
-#pragma section = "APPLICATION_SDRAM_WBLOCK"
+#pragma section = "USER_PRG_RBLOCK"
+#pragma section = "USER_PRG_WBLOCK"
+#pragma section = "USER_DATA_RBLOCK"
+#pragma section = "USER_DATA_WBLOCK"
+#pragma section = "SYSTEM_PRG_RBLOCK"
+#pragma section = "SYSTEM_PRG_WBLOCK"
+#pragma section = "SYSTEM_DATA_RBLOCK"
+#pragma section = "SYSTEM_DATA_WBLOCK"
+#pragma section = "NONCACHE_RBLOCK"
+#pragma section = "NONCACHE_WBLOCK"
+#pragma section = "SHARED_NONCACHE_BUFFER_RBLOCK"
+#pragma section = "SHARED_NONCACHE_BUFFER_WBLOCK"
 
 #define APP_MANIFEST_MAGIC   0x50415A52u   /* 'RZAP' little-endian */
-#define APP_MANIFEST_ENTRIES 4
+#define APP_MANIFEST_ENTRIES 7
 
 extern void system_init(void);
 
@@ -56,14 +68,14 @@ typedef struct
     uint32_t              entry_point;   /* address to jump to after copying  */
     uint32_t              reserved;
     app_manifest_entry_t  entries[APP_MANIFEST_ENTRIES];
-} app_manifest_t;                        /* 16 + 4*16 = 80 bytes (0x50)       */
+} app_manifest_t;                        /* 16 + 7*16 = 128 bytes (0x80)      */
 
 /* The IAR linker resolves __section_begin/__section_size at link time and
  * writes the resulting addresses into this constant initialiser image. */
 __root const app_manifest_t g_app_manifest @ ".app_manifest" =
 {
     .magic       = APP_MANIFEST_MAGIC,
-    .entry_count = 3u,
+    .entry_count = 7u,
     .entry_point = (uint32_t)system_init,
     .reserved    = 0u,
     .entries =
@@ -71,21 +83,44 @@ __root const app_manifest_t g_app_manifest @ ".app_manifest" =
         { /* ATCM copy: vector table */
             .src   = (uint32_t)__section_begin("VECTOR_RBLOCK"),
             .dst   = (uint32_t)__section_begin("VECTOR_WBLOCK"),
-            .size  = (uint32_t)__section_size ("VECTOR_RBLOCK"),
+            .size  = (uint32_t)__section_size ("VECTOR_WBLOCK"),
             .flags = 1u,
         },
-        { /* SystemRAM copy: FSP drivers + application glue + .data/.rodata */
-            .src   = (uint32_t)__section_begin("APPLICATION_PRG_RBLOCK"),
-            .dst   = (uint32_t)__section_begin("APPLICATION_PRG_WBLOCK"),
-            .size  = (uint32_t)__section_size ("APPLICATION_PRG_RBLOCK"),
+        { /* SystemRAM copy: user/app code */
+            .src   = (uint32_t)__section_begin("USER_PRG_RBLOCK"),
+            .dst   = (uint32_t)__section_begin("USER_PRG_WBLOCK"),
+            .size  = (uint32_t)__section_size ("USER_PRG_WBLOCK"),
             .flags = 1u,
         },
-        { /* SDRAM copy: PROFINET (obsd*.o) stack code & data */
-            .src   = (uint32_t)__section_begin("APPLICATION_SDRAM_RBLOCK"),
-            .dst   = (uint32_t)__section_begin("APPLICATION_SDRAM_WBLOCK"),
-            .size  = (uint32_t)__section_size ("APPLICATION_SDRAM_RBLOCK"),
+        { /* SystemRAM copy: user/app initialized data */
+            .src   = (uint32_t)__section_begin("USER_DATA_RBLOCK"),
+            .dst   = (uint32_t)__section_begin("USER_DATA_WBLOCK"),
+            .size  = (uint32_t)__section_size ("USER_DATA_WBLOCK"),
             .flags = 1u,
         },
-        { 0u, 0u, 0u, 0u },
+        { /* SDRAM copy: PROFINET (obsd*.o) code */
+            .src   = (uint32_t)__section_begin("SYSTEM_PRG_RBLOCK"),
+            .dst   = (uint32_t)__section_begin("SYSTEM_PRG_WBLOCK"),
+            .size  = (uint32_t)__section_size ("SYSTEM_PRG_WBLOCK"),
+            .flags = 1u,
+        },
+        { /* SDRAM copy: PROFINET (obsd*.o) initialized data */
+            .src   = (uint32_t)__section_begin("SYSTEM_DATA_RBLOCK"),
+            .dst   = (uint32_t)__section_begin("SYSTEM_DATA_WBLOCK"),
+            .size  = (uint32_t)__section_size ("SYSTEM_DATA_WBLOCK"),
+            .flags = 1u,
+        },
+        { /* Noncache initialized data */
+            .src   = (uint32_t)__section_begin("NONCACHE_RBLOCK"),
+            .dst   = (uint32_t)__section_begin("NONCACHE_WBLOCK"),
+            .size  = (uint32_t)__section_size ("NONCACHE_WBLOCK"),
+            .flags = 1u,
+        },
+        { /* Shared noncache initialized data */
+            .src   = (uint32_t)__section_begin("SHARED_NONCACHE_BUFFER_RBLOCK"),
+            .dst   = (uint32_t)__section_begin("SHARED_NONCACHE_BUFFER_WBLOCK"),
+            .size  = (uint32_t)__section_size ("SHARED_NONCACHE_BUFFER_WBLOCK"),
+            .flags = 1u,
+        },
     },
 };

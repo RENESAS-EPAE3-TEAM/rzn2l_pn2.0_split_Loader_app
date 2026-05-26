@@ -314,8 +314,8 @@ void R_BSP_WarmStart (bsp_warm_start_event_t event)
         bsp_clear_external_bss_sections();
 
     #if 0
-        /* Loader manifest already copied APPLICATION_SDRAM_RBLOCK to
-         * APPLICATION_SDRAM_WBLOCK before jumping to the App. */
+        /* Loader manifest already copied SYSTEM_PRG/DATA_RBLOCK to
+         * SYSTEM_PRG/DATA_WBLOCK before jumping to the App. */
         bsp_copy_to_external_ram();
     #endif
 

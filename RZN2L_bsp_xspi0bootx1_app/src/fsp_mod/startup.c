@@ -139,22 +139,17 @@ void SystemInit (void)
     /* Set memory attributes, etc. */
     bsp_memory_protect_setting();
 
-    /* In the split Loader+App boot flow, the Loader has already copied the
-     * App manifest entries into their runtime locations before jumping here.
-     * Re-running the default FSP flash-to-RAM copy would duplicate the vector,
-     * USER_PRG and USER_DATA copies with the App's modified ICF layout. */
-#if 0
  #if !(BSP_CFG_RAM_EXECUTION)
 
-     /* Copy the application program from external Flash to internal RAM.
-      * In the case of multi-core operation, copies each section (vector, loader(program/data), user(program/data)) of
-      * the secondary core (or later). */
-     bsp_copy_to_ram();
+        /* The Loader has already copied the App manifest entries. Keep only the
+         * source-style bss clear so USER/NONCACHE zero-init blocks are valid. */
+    #if 0
+        bsp_copy_to_ram();
+    #endif
 
      /* Clear bss section in internal RAM. */
      bsp_application_bss_init();
  #endif
-#endif
 
 #if BSP_CFG_C_RUNTIME_INIT
 
