@@ -12,6 +12,9 @@
 /***********************************************************************************************************************
  * Macro definitions
  **********************************************************************************************************************/
+#ifndef APP_STANDALONE_DEBUG
+#define APP_STANDALONE_DEBUG (0)
+#endif
 
 /***********************************************************************************************************************
  * Typedef definitions
@@ -141,11 +144,9 @@ void SystemInit (void)
 
  #if !(BSP_CFG_RAM_EXECUTION)
 
-        /* The Loader has already copied the App manifest entries. Keep only the
-         * source-style bss clear so USER/NONCACHE zero-init blocks are valid. */
-    #if 0
+#if APP_STANDALONE_DEBUG
         bsp_copy_to_ram();
-    #endif
+#endif
 
      /* Clear bss section in internal RAM. */
      bsp_application_bss_init();

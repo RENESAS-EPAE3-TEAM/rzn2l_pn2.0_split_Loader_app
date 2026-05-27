@@ -3,10 +3,14 @@
 #define BOARD_CFG_H_
 #include "../../../rzn/board/rzn2l_rsk/board.h"
             #define BSP_CFG_XSPI0_X1_BOOT (1)
-            /* Loader-param header (g_bsp_loader_param) is only used by the BootROM
-             * to load the SSBL. The App is loaded by our SSBL via the app_manifest
-             * mechanism, so disable it here to free .loader_param. */
+            #ifndef APP_STANDALONE_DEBUG
+            #define APP_STANDALONE_DEBUG (1)
+            #endif
+            #if APP_STANDALONE_DEBUG
+            #define BSP_CFG_USE_LOADER_PARAMETER (1)
+            #else
             #define BSP_CFG_USE_LOADER_PARAMETER (0)
+            #endif
             #define BSP_CFG_CACHE_FLG (0x00000000)
             #define BSP_CFG_CS0BCR_V_WRAPCFG_V (0x00000000)
             #define BSP_CFG_CS0WCR_V_COMCFG_V (0x00000000)

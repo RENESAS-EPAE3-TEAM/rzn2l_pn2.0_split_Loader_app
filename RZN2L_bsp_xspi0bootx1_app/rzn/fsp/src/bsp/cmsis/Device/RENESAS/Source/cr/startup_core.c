@@ -12,6 +12,10 @@
 /***********************************************************************************************************************
  * Macro definitions
  **********************************************************************************************************************/
+#ifndef APP_STANDALONE_DEBUG
+#define APP_STANDALONE_DEBUG (0)
+#endif
+
 #define BSP_HACTLR_BIT_L                    (0xB783)     /* HACTLR EL1 access enable(0b1011 0111 1000 0011) */
 #define BSP_HCR_HCD_DISABLE                 (0x20000000) /* HCR.HCD = 1 : HVC disable */
 #define BSP_MODE_MASK                       (0x1F)       /* Bit mask for mode bits in CPSR */
@@ -161,7 +165,17 @@ BSP_TARGET_ARM BSP_ATTRIBUTE_STACKLESS void system_init (void)
 {
 /* These settings are invalid for application project.
  * The necessary processing has been performed in the loader program. */
-#if 0 // Original program
+#if APP_STANDALONE_DEBUG
+// Software loops are only needed when debugging.
+    __asm volatile (
+        " mov r0, #0 \n"
+        " movw r1, #0x68bf \n"
+        " movt r1, #0x478 \n"
+        "software_loop: \n"
+        " adds r0, #1 \n"
+        " cmp r0, r1 \n"
+        " bne software_loop \n"
+        ::: "memory");
     __asm volatile (
         "set_hactlr:                              \n"
         "    MOVW  r0, %[bsp_hactlr_bit_l]        \n" /* Set HACTLR bits(L) */

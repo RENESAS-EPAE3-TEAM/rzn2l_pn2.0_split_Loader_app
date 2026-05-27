@@ -27,7 +27,11 @@ FSP_CPP_HEADER
 void R_BSP_WarmStart(bsp_warm_start_event_t event) BSP_PLACE_IN_SECTION(".warm_start");
 FSP_CPP_FOOTER
 
-#if 0  /* SDRAM is initialized by the Loader (SSBL) project, not by the App. */
+#ifndef APP_STANDALONE_DEBUG
+#define APP_STANDALONE_DEBUG (0)
+#endif
+
+#if APP_STANDALONE_DEBUG && !defined(USE_HRAM)
 static void bsp_sdram_init (void);
 #endif
 
@@ -279,17 +283,64 @@ void handle_error (fsp_err_t err)
  *
  * @param[in]  event    Where at in the start up process the code is currently at
  **********************************************************************************************************************/
-/* QSPI Quad-Enable bootstrap (formerly here) has been moved into the Loader
- * project (RZN2L_bsp_xspi0bootx1_loader/src/hal_entry.c). The Application
- * keeps only the g_qspi0 instance which is used at runtime by the PROFINET
- * stack (profinet_sdk/src/pns/rtos/rtos_rzt2_qspi_flash.c). */
+#if APP_STANDALONE_DEBUG
+#define QSPI_CMD_WRITE_ENABLE 0
+#define QSPI_CMD_WRITE_STATUS 1
+#define QSPI_CMD_READ_STATUS  2
+spi_flash_direct_transfer_t qspi_command[3] =
+{
+    {
+    .command        = 0x06,
+    .address        = 0U,
+    .data           = 0U,
+    .command_length = 1U,
+    .address_length = 0U,
+    .data_length    = 0U,
+    .dummy_cycles   = 0U
+    },
+    {
+    .command        = 0x01,
+    .address        = 0U,
+    .data           = 0x40,
+    .command_length = 1U,
+    .address_length = 0U,
+    .data_length    = 1U,
+    .dummy_cycles   = 0U
+    },
+    {
+    .command        = 0x05,
+    .address        = 0U,
+    .data           = 0U,
+    .command_length = 1U,
+    .address_length = 0U,
+    .data_length    = 1U,
+    .dummy_cycles   = 0U
+    },
+};
+#endif
+
 void R_BSP_WarmStart (bsp_warm_start_event_t event)
 {
-    /* NOTE: BSP_WARM_START_POST_LOADER hook is handled by the Loader
-     * project (RZN2L_bsp_xspi0bootx1_loader). It performs board pin setup,
-     * external SDRAM/HyperRAM init and (when needed) QSPI Quad-Enable.
-     * The application opens its own IOPORT control block after its external
-     * RAM data/BSS sections are initialized. */
+#if APP_STANDALONE_DEBUG
+    if (BSP_WARM_START_POST_LOADER == event)
+    {
+        R_IOPORT_Open(&IOPORT_CFG_CTRL, &IOPORT_CFG_NAME);
+
+        R_XSPI_QSPI_Open(&g_qspi_ldr_ctrl, &g_qspi_ldr_cfg);
+        R_XSPI_QSPI_SpiProtocolSet(&g_qspi_ldr_ctrl, SPI_FLASH_PROTOCOL_1S_1S_1S);
+        R_XSPI_QSPI_DirectTransfer(&g_qspi_ldr_ctrl, &qspi_command[QSPI_CMD_WRITE_ENABLE], SPI_FLASH_DIRECT_TRANSFER_DIR_WRITE);
+        R_XSPI_QSPI_DirectTransfer(&g_qspi_ldr_ctrl, &qspi_command[QSPI_CMD_WRITE_STATUS], SPI_FLASH_DIRECT_TRANSFER_DIR_WRITE);
+        do
+        {
+            R_XSPI_QSPI_DirectTransfer(&g_qspi_ldr_ctrl, &qspi_command[QSPI_CMD_READ_STATUS], SPI_FLASH_DIRECT_TRANSFER_DIR_READ);
+        } while ((qspi_command[QSPI_CMD_READ_STATUS].data & 0x01) == 0x0);
+        do
+        {
+            R_XSPI_QSPI_DirectTransfer(&g_qspi_ldr_ctrl, &qspi_command[QSPI_CMD_READ_STATUS], SPI_FLASH_DIRECT_TRANSFER_DIR_READ);
+        } while ((qspi_command[QSPI_CMD_READ_STATUS].data & 0x41) != 0x40);
+        R_XSPI_QSPI_SpiProtocolSet(&g_qspi_ldr_ctrl, SPI_FLASH_PROTOCOL_1S_4S_4S);
+    }
+#endif
 
     if (BSP_WARM_START_RESET == event)
     {
@@ -307,26 +358,25 @@ void R_BSP_WarmStart (bsp_warm_start_event_t event)
  #endif
 #endif
 
-        /* External RAM (SDRAM/HyperRAM) and the App image sections are
-         * initialized by the Loader (SSBL) before jumping to the application.
-         * Only clear runtime zero-init/no-init work areas here. */
-
+#if APP_STANDALONE_DEBUG
+#ifdef USE_HRAM
+        hram_init();
+#else
+        bsp_sdram_init();
+#endif
         bsp_clear_external_bss_sections();
-
-    #if 0
-        /* Loader manifest already copied SYSTEM_PRG/DATA_RBLOCK to
-         * SYSTEM_PRG/DATA_WBLOCK before jumping to the App. */
         bsp_copy_to_external_ram();
-    #endif
-
+#else
+        bsp_clear_external_bss_sections();
         if (NULL != g_bsp_pin_cfg.p_extend)
         {
             R_IOPORT_Open(&IOPORT_CFG_CTRL, &IOPORT_CFG_NAME);
         }
+#endif
     }
 }
 
-#if 0  /* SDRAM init is done in the Loader project; kept here for reference. */
+#if APP_STANDALONE_DEBUG && !defined(USE_HRAM)
 /*******************************************************************************************************************//**
  * @brief      Setup SDRAM controller
  *
