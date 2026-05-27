@@ -62,7 +62,7 @@
     <node id="board.clock.pclkadc.display" option="board.clock.pclkadc.display.value"/>
     <node id="board.clock.pclkcan.freq" option="board.clock.pclkcan.freq.40m"/>
     <node id="board.clock.pclkcan.freq.display" option="board.clock.pclkcan.freq.display.value"/>
-    <node id="board.clock.xspi.clk0.freq" option="board.clock.xspi.clk0.freq.12m"/>
+    <node id="board.clock.xspi.clk0.freq" option="board.clock.xspi.clk0.freq.100m"/>
     <node id="board.clock.xspi.clk1.freq" option="board.clock.xspi.clk1.freq.12m"/>
     <node id="board.clock.tclk.freq" option="board.clock.tclk.freq.100m"/>
   </raClockConfiguration>

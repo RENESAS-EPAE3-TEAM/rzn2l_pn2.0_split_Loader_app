@@ -597,7 +597,7 @@ FSP Configuration
     SPI2ASYNCCLK: 96MHz
     SPI3ASYNCCLK: 96MHz
     CANFDCLK Src: PCLKCAN 40MHz
-    XSPI_CLK0 12.5MHz
+    XSPI_CLK0 100MHz
     XSPI_CLK1 12.5MHz
     
   Pin Configurations
