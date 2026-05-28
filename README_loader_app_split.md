@@ -255,6 +255,8 @@ APPLICATION_PRG_RBLOCK    0x6010'0050    <App bin size>
 
 ## 7. 当前可能存在的问题和限制
 
+本节记录的问题会在后续需求中逐步完善，并随工程更新推送到 GitHub。
+
 ### 7.1 App 其它构建配置尚未验证
 
 目前目标 App 工程主要验证的是 `EK52_App1_STANDARD` 配置。IAR workspace 中 App 相关的其它构建选项和功能配置尚未逐项验证，因此不能默认认为所有 App configuration 都已经适配 Loader + App 拆分后的启动、链接、manifest 和调试流程。
