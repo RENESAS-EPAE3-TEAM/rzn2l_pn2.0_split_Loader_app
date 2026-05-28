@@ -13,7 +13,7 @@ extern const loader_table table[TABLE_ENTRY_NUM];
 extern void R_BSP_CacheCleanInvalidateAll(void);
 
 /*--- Application image manifest (must match App's src/app_manifest.c) ------*/
-#define APP_MANIFEST_ADDR     (0x6027F1ACu)
+#define APP_MANIFEST_ADDR     (0x60100050u)
 #define APP_MANIFEST_MAGIC    (0x50415A52u)  /* 'RZAP' */
 #define APP_MANIFEST_ENTRIES  (9)
 

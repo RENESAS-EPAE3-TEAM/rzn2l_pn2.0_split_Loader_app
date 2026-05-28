@@ -6,14 +6,14 @@
  *
  * The Loader cannot resolve App-side link-time symbols (the two projects are
  * built and linked independently). To bridge this, the App publishes a small
- * manifest struct at a known physical address in xSPI flash
- * (APP_MANIFEST_ADDR is taken from the App map while .app_manifest is still
- * floating). The Loader's hal_entry() reads it directly via that pointer, then
- * performs the listed memcpy()s and jumps to entry_point.
+ * manifest struct at a fixed physical address in xSPI flash. The App ICF keeps
+ * .app_manifest in a reserved 0x100-byte window at the beginning of the App raw
+ * image, and the Loader's hal_entry() reads it directly via that pointer before
+ * performing the listed memcpy()s and jumping to entry_point.
  *
  * The src/dst/size values are filled in by the IAR linker using the
  * __section_begin / __section_size intrinsics on the blocks defined in
- * script/fsp_xspi0_boot.icf:
+ * script/fsp_xspi0_boot_m.icf:
  *
  *    LDR_PRG_RBLOCK                 -> LDR_PRG_WBLOCK                 (BTCM, offset)
  *    LDR_DATA_RBLOCK                -> LDR_DATA_WBLOCK                (BTCM, offset)
