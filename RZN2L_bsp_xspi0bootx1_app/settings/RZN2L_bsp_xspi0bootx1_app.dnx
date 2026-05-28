@@ -27,7 +27,8 @@
     <Jet>
         <JetConnSerialNo>89256</JetConnSerialNo>
         <JetConnFoundProbes />
-        <OnlineReset>Software</OnlineReset>
+        <PrevWtdReset>Hardware</PrevWtdReset>
+        <OnlineReset>Hardware</OnlineReset>
         <DisableInterrupts>0</DisableInterrupts>
         <LeaveRunning>0</LeaveRunning>
         <MultiCoreRunAll>0</MultiCoreRunAll>
@@ -38,7 +39,7 @@
         <EnableCache>1</EnableCache>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>2730148127</Checksum>
+        <Checksum>1216399186</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -47,6 +48,22 @@
     <Disassembly>
         <MixedMode>1</MixedMode>
     </Disassembly>
+    <CallStack>
+        <ShowArgs>0</ShowArgs>
+    </CallStack>
+    <SWOManager>
+        <SamplingDivider>8192</SamplingDivider>
+        <OverrideClock>0</OverrideClock>
+        <CpuClock>25895989920530497</CpuClock>
+        <SwoClock>25896153130336335</SwoClock>
+        <DataLogMode>0</DataLogMode>
+        <ItmPortsEnabled>63</ItmPortsEnabled>
+        <ItmTermIOPorts>1</ItmTermIOPorts>
+        <ItmLogPorts>0</ItmLogPorts>
+        <ItmLogFile>$PROJ_DIR$\ITM.log</ItmLogFile>
+        <PowerForcePC>1</PowerForcePC>
+        <PowerConnectPC>1</PowerConnectPC>
+    </SWOManager>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>
@@ -70,27 +87,11 @@
         <LiveEnabled>0</LiveEnabled>
         <LiveFile />
     </PowerLog>
-    <CallStack>
-        <ShowArgs>0</ShowArgs>
-    </CallStack>
     <PowerProbe>
         <Frequency>10000</Frequency>
         <Probe0>ITrgPwr</Probe0>
         <ProbeSetup0>2 1 1 2 0 0</ProbeSetup0>
     </PowerProbe>
-    <SWOManager>
-        <SamplingDivider>8192</SamplingDivider>
-        <OverrideClock>0</OverrideClock>
-        <CpuClock>2567087930912</CpuClock>
-        <SwoClock>2567087932928</SwoClock>
-        <DataLogMode>0</DataLogMode>
-        <ItmPortsEnabled>63</ItmPortsEnabled>
-        <ItmTermIOPorts>1</ItmTermIOPorts>
-        <ItmLogPorts>0</ItmLogPorts>
-        <ItmLogFile>$PROJ_DIR$\ITM.log</ItmLogFile>
-        <PowerForcePC>1</PowerForcePC>
-        <PowerConnectPC>1</PowerConnectPC>
-    </SWOManager>
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>
@@ -104,7 +105,10 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\application\App1_STANDARD\usriod_main.c}.567.1" 0 0 1 "" 0 "" 0</Bp0>
-        <Count>1</Count>
+        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\rzn\fsp\src\bsp\cmsis\Device\RENESAS\Source\cr\startup_core.c}.276.1" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\rzn\fsp\src\bsp\cmsis\Device\RENESAS\Source\cr\startup_core.c}.310.5" 0 0 1 "" 0 "" 0</Bp1>
+        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\src\fsp_mod\startup.c}.95.5" 0 0 1 "" 0 "" 0</Bp2>
+        <Bp3>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\RZN2L_bsp_xspi0bootx1_loader\rzn\fsp\src\bsp\cmsis\Device\RENESAS\Source\startup.c}.92.1" 0 0 1 "" 0 "" 0</Bp3>
+        <Count>4</Count>
     </Breakpoints2>
 </settings>
