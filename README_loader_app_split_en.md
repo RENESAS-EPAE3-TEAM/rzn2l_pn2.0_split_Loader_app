@@ -39,6 +39,17 @@ This document summarizes the main changes made when splitting the source referen
 | FSP Board configuration | `board.rzn2lrsk.xspi0_x1` |
 | RTOS | `AWS FreeRTOS` |
 
+The PROFINET SDK directory must be placed next to `iar_project`, not inside the current git repository. The recommended directory layout is:
+
+```text
+Renesas_PROFINET_IRT_DEVKIT_V2.0.0/
++-- iar_project/
++-- profinet_sdk/
+`-- LICENSE.txt
+```
+
+The current git repository root is `iar_project`, so a normal push to GitHub only includes the contents under `iar_project`; it does not include the sibling `profinet_sdk` directory. To restore the project on another machine, prepare the same-version `profinet_sdk` separately and place it at the sibling location shown above.
+
 ## 2. Splitting the Source Reference Project into Loader + App
 
 The source reference project `rzn2l_xspi_boot` is a monolithic xSPI boot project: startup code, system initialization, the PROFINET IRT App, external SDRAM initialization, copy tables, linker layout, and debug configuration are all handled in one project. The target project splits it into two projects:

@@ -39,6 +39,17 @@
 | FSP Board 配置 | `board.rzn2lrsk.xspi0_x1` |
 | RTOS | `AWS FreeRTOS` |
 
+PROFINET SDK 目录需要放在 `iar_project` 的同级目录，而不是放在当前 git 仓库内部。推荐目录结构如下：
+
+```text
+Renesas_PROFINET_IRT_DEVKIT_V2.0.0/
++-- iar_project/
++-- profinet_sdk/
+`-- LICENSE.txt
+```
+
+当前 git 仓库根目录是 `iar_project`，因此正常 push 到 GitHub 时只会包含 `iar_project` 内的内容，不会包含同级的 `profinet_sdk`。如需在另一台机器上恢复工程，需要额外准备同版本 `profinet_sdk` 并放到上述同级位置。
+
 ## 2. 从源参考工程拆分为 Loader + App
 
 源参考工程 `rzn2l_xspi_boot` 是一个单体 xSPI boot 工程：启动代码、系统初始化、PROFINET IRT App、外部 SDRAM 初始化、拷贝表、链接布局和调试配置都在一个工程中完成。目标工程将它拆为两个工程：
