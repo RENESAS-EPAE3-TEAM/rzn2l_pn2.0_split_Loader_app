@@ -39,7 +39,7 @@
 | FSP Board 配置 | `board.rzn2lrsk.xspi0_x1` |
 | RTOS | `AWS FreeRTOS` |
 
-PROFINET SDK 目录需要放在 `iar_project` 的同级目录，而不是放在当前 git 仓库内部。推荐目录结构如下：
+PROFINET SDK 目录需要放在 `iar_project` 的同级目录，推荐目录结构如下：
 
 ```text
 Renesas_PROFINET_IRT_DEVKIT_V2.0.0/
