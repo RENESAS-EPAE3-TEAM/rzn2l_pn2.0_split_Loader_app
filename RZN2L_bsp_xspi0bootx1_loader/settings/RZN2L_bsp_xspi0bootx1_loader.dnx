@@ -28,18 +28,18 @@
         <JetConnSerialNo>89256</JetConnSerialNo>
         <JetConnFoundProbes />
         <PrevWtdReset>Hardware</PrevWtdReset>
+        <OnlineReset>Hardware</OnlineReset>
         <DisableInterrupts>0</DisableInterrupts>
         <LeaveRunning>0</LeaveRunning>
         <MultiCoreRunAll>0</MultiCoreRunAll>
         <CpuHaltOnBreakpointSet>0</CpuHaltOnBreakpointSet>
-        <OnlineReset>Hardware</OnlineReset>
     </Jet>
     <ArmDriver>
         <EnableCache>1</EnableCache>
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>3511226621</Checksum>
+        <Checksum>4180216594</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -55,8 +55,8 @@
     <SWOManager>
         <SamplingDivider>8192</SamplingDivider>
         <OverrideClock>0</OverrideClock>
-        <CpuClock>5791474508206796389</CpuClock>
-        <SwoClock>6869191534185959250</SwoClock>
+        <CpuClock>7954854873796670571</CpuClock>
+        <SwoClock>5715719247974462309</SwoClock>
         <DataLogMode>0</DataLogMode>
         <ItmPortsEnabled>63</ItmPortsEnabled>
         <ItmTermIOPorts>1</ItmTermIOPorts>
@@ -124,6 +124,16 @@
         <LiveEnabled>0</LiveEnabled>
         <LiveFile />
     </PowerLog>
+    <PowerProbe>
+        <Frequency>10000</Frequency>
+        <Probe0>ITrgPwr</Probe0>
+        <ProbeSetup0>2 1 1 2 0 0</ProbeSetup0>
+    </PowerProbe>
+    <Aliases>
+        <Count>0</Count>
+        <SuppressDialog>0</SuppressDialog>
+        <SuppressResolveSourcesForDebugTarget>1</SuppressResolveSourcesForDebugTarget>
+    </Aliases>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -146,14 +156,4 @@
         <Bp11>_ 0 "EMUL_DATA" "BSP_CLOCKS_XSPI0_CLOCK_DIV0_12_5_MHZ" 0 0 0 0 4294967295</Bp11>
         <Count>12</Count>
     </Breakpoints2>
-    <PowerProbe>
-        <Frequency>10000</Frequency>
-        <Probe0>ITrgPwr</Probe0>
-        <ProbeSetup0>2 1 1 2 0 0</ProbeSetup0>
-    </PowerProbe>
-    <Aliases>
-        <Count>0</Count>
-        <SuppressDialog>0</SuppressDialog>
-        <SuppressResolveSourcesForDebugTarget>1</SuppressResolveSourcesForDebugTarget>
-    </Aliases>
 </settings>
