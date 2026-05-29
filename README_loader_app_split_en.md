@@ -39,7 +39,7 @@ This document summarizes the main changes made when splitting the source referen
 | FSP Board configuration | `board.rzn2lrsk.xspi0_x1` |
 | RTOS | `AWS FreeRTOS` |
 
-The PROFINET SDK directory must be placed next to `iar_project`, not inside the current git repository. The recommended directory layout is:
+The PROFINET SDK directory must be placed next to `iar_project`. The recommended directory layout is:
 
 ```text
 Renesas_PROFINET_IRT_DEVKIT_V2.0.0/
