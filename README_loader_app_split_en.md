@@ -22,7 +22,10 @@ This document summarizes the main changes made when splitting the source referen
 - [6. Recommended Verification Checklist](#6-recommended-verification-checklist)
 - [7. Current Possible Issues and Limitations](#7-current-possible-issues-and-limitations)
 - [8. Notes for Code Generation with RASC](#8-notes-for-code-generation-with-rasc)
-- [9. References](#9-references)
+- [9. References](#9-references) (Before starting the development of this project, please make sure to understand the content in the references!
+
+
+)
 
 ## 1. Work Environment
 
