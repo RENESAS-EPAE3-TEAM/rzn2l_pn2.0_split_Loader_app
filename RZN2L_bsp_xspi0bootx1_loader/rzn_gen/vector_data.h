@@ -8,7 +8,7 @@
 
                 /* Number of interrupts allocated */
         #ifndef VECTOR_DATA_IRQ_COUNT
-        #define VECTOR_DATA_IRQ_COUNT    (0)
+        #define VECTOR_DATA_IRQ_COUNT    (4)
         #endif
         /* ISR prototypes */
 

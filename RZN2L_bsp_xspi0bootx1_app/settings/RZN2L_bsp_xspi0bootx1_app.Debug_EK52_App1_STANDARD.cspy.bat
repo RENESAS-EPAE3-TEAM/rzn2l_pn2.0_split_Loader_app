@@ -21,20 +21,24 @@
 
 @echo off 
 
+pushd "%~dp0"
+
 if not "%~1" == "" goto debugFile 
 
 @echo on 
 
-"C:\iar\ewarm-9.70.2\common\bin\cspybat" -f "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App1_STANDARD.general.xcl" --backend -f "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App1_STANDARD.driver.xcl" 
+"C:\iar\ewarm-9.70.2\common\bin\cspybat" -f "RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App1_STANDARD.general.xcl" --backend -f "RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App1_STANDARD.driver.xcl"
 
 @echo off 
+popd
 goto end 
 
 :debugFile 
 
 @echo on 
 
-"C:\iar\ewarm-9.70.2\common\bin\cspybat" -f "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App1_STANDARD.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\MyPC\Desktop\Renesas_PROFINET_IRT_DEVKIT_V2.0.0\iar_project\RZN2L_bsp_xspi0bootx1_app\settings\RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App1_STANDARD.driver.xcl" 
+"C:\iar\ewarm-9.70.2\common\bin\cspybat" -f "RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App1_STANDARD.general.xcl" "--debug_file=%~1" --backend -f "RZN2L_bsp_xspi0bootx1_app.Debug_EK52_App1_STANDARD.driver.xcl"
 
 @echo off 
+popd
 :end

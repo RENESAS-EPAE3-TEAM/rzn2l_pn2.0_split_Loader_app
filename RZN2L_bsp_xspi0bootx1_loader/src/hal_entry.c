@@ -7,13 +7,13 @@ FSP_CPP_HEADER
 void R_BSP_WarmStart(bsp_warm_start_event_t event) BSP_PLACE_IN_SECTION(".warm_start");
 FSP_CPP_FOOTER
 
-extern bsp_leds_t g_bsp_leds;
+//extern bsp_leds_t g_bsp_leds;
 extern void bsp_copy_multibyte(uintptr_t * src, uintptr_t * dst, uintptr_t bytesize);
 extern const loader_table table[TABLE_ENTRY_NUM];
 extern void R_BSP_CacheCleanInvalidateAll(void);
 
 /*--- Application image manifest (must match App's src/app_manifest.c) ------*/
-#define APP_MANIFEST_ADDR     (0x60100050u)
+#define APP_MANIFEST_ADDR     (0x60100250u)
 #define APP_MANIFEST_MAGIC    (0x50415A52u)  /* 'RZAP' */
 #define APP_MANIFEST_ENTRIES  (9)
 
@@ -49,17 +49,17 @@ void hal_entry(void)
 {
     void (*app_prg)(void);
 
-    /* LED type structure */
-    bsp_leds_t leds = g_bsp_leds;
-
-    /* If this board has no LEDs then trap here */
-    if (0 == leds.led_count)
-    {
-        while (1)
-        {
-            ;                          // There are no LEDs on this board
-        }
-    }
+//    /* LED type structure */
+//    bsp_leds_t leds = g_bsp_leds;
+//
+//    /* If this board has no LEDs then trap here */
+//    if (0 == leds.led_count)
+//    {
+//        while (1)
+//        {
+//            ;                          // There are no LEDs on this board
+//        }
+//    }
 
     /* Holds level to set for pins */
     bsp_io_level_t pin_level = BSP_IO_LEVEL_HIGH;
