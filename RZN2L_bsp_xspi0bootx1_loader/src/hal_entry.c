@@ -13,7 +13,7 @@ extern const loader_table table[TABLE_ENTRY_NUM];
 extern void R_BSP_CacheCleanInvalidateAll(void);
 
 /*--- Application image manifest (must match App's src/app_manifest.c) ------*/
-#define APP_MANIFEST_ADDR     (0x60100050u)
+#define APP_MANIFEST_ADDR     (0x60100250u)
 #define APP_MANIFEST_MAGIC    (0x50415A52u)  /* 'RZAP' */
 #define APP_MANIFEST_ENTRIES  (9)
 
@@ -123,7 +123,7 @@ void hal_entry(void)
     R_BSP_PinAccessDisable();
 
     /* Delay */
-    R_BSP_SoftwareDelay(1000, BSP_DELAY_UNITS_MILLISECONDS);
+    //R_BSP_SoftwareDelay(1000, BSP_DELAY_UNITS_MILLISECONDS);
 
     R_BSP_CacheCleanInvalidateAll();
     __asm volatile("dsb");
