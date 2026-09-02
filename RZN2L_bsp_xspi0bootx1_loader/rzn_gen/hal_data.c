@@ -82,6 +82,64 @@ const spi_flash_instance_t g_qspi_ldr =
     .p_cfg =  &g_qspi_ldr_cfg,
     .p_api =  &g_spi_flash_on_xspi_qspi,
 };
+xspi_hyper_instance_ctrl_t g_hyperbus0_ctrl;
+
+static xspi_hyper_cs_timing_setting_t g_hyperbus0_cs_timing_settings =
+{
+    .transaction_interval = XSPI_HYPER_TRANSACTION_INTERVAL_CLOCKS_7,
+    .cs_pullup_lag        = XSPI_HYPER_CS_PULLUP_CLOCKS_NO_EXTENSION,
+    .cs_pulldown_lead     = XSPI_HYPER_CS_PULLDOWN_CLOCKS_NO_EXTENSION,
+};
+
+static xspi_hyper_address_space_t g_hyperbus0_address_space_settings =
+{
+    .unit0_cs0_end_address   = XSPI_HYPER_CFG_UNIT_0_CS_0_END_ADDRESS,
+    .unit0_cs1_start_address = XSPI_HYPER_CFG_UNIT_0_CS_1_START_ADDRESS,
+    .unit0_cs1_end_address   = XSPI_HYPER_CFG_UNIT_0_CS_1_END_ADDRESS,
+    .unit1_cs0_end_address   = XSPI_HYPER_CFG_UNIT_1_CS_0_END_ADDRESS,
+    .unit1_cs1_start_address = XSPI_HYPER_CFG_UNIT_1_CS_1_START_ADDRESS,
+    .unit1_cs1_end_address   = XSPI_HYPER_CFG_UNIT_1_CS_1_END_ADDRESS,
+};
+
+static xspi_hyper_extended_cfg_t g_hyperbus0_extended_cfg =
+{
+    .unit                                    = 0,
+    .chip_select                             = XSPI_HYPER_CHIP_SELECT_1,
+    .memory_size                             = 0x800000,
+    .data_latching_delay_clock               = 0x08,
+    .p_cs_timing_settings                    = &g_hyperbus0_cs_timing_settings,
+    .p_autocalibration_preamble_pattern_addr = (uint8_t *) 0x00,
+#if 0 == 0
+    .prefetch_en                             = (xspi_hyper_prefetch_function_t) XSPI_HYPER_CFG_UNIT_0_PREFETCH_FUNCTION,
+#else
+    .prefetch_en                             = (xspi_hyper_prefetch_function_t) XSPI_HYPER_CFG_UNIT_1_PREFETCH_FUNCTION,
+#endif
+#if BSP_FEATURE_XSPI_VOLTAGE_SETTING_SUPPORTED
+ #if 0 == 0
+    .io_voltage                              = (xspi_hyper_io_voltage_t) XSPI_HYPER_CFG_UNIT_0_IOVOLTAGE,
+ #else
+    .io_voltage                              = (xspi_hyper_io_voltage_t) XSPI_HYPER_CFG_UNIT_1_IOVOLTAGE,
+ #endif
+#endif
+    .p_address_space                         = &g_hyperbus0_address_space_settings,
+};
+
+const hyperbus_cfg_t g_hyperbus0_cfg =
+{
+    .burst_type                   = HYPERBUS_BURST_TYPE_LINEAR,
+    .access_space                 = HYPERBUS_SPACE_SELECT_MEMORY_SPACE,
+    .read_latency_count           = HYPERBUS_LATENCY_COUNT_6,
+    .memory_write_latency_count   = HYPERBUS_LATENCY_COUNT_6,
+    .register_write_latency_count = HYPERBUS_LATENCY_COUNT_0,
+    .p_extend                     = &g_hyperbus0_extended_cfg,
+};
+
+const hyperbus_instance_t g_hyperbus0 =
+{
+    .p_ctrl = &g_hyperbus0_ctrl,
+    .p_cfg  = &g_hyperbus0_cfg,
+    .p_api  = &g_hyperbus_on_xspi_hyper,
+};
 void g_hal_init(void) {
 g_common_init();
 }

@@ -769,10 +769,27 @@
       <property id="module.driver.xspi_qspi.cs_pulldown_lead" value="module.driver.xspi_qspi.cs_pulldown_lead.no_extension"/>
       <property id="module.driver.xspi_qspi.cs_pullup_lag" value="module.driver.xspi_qspi.cs_pullup_lag.no_extension"/>
     </module>
+    <module id="module.driver.hyper_ram_on_xspi_hyper.2064180533">
+      <property id="module.driver.xspi_hyper.name" value="g_hyperbus0"/>
+      <property id="module.driver.xspi_hyper.unit" value="0"/>
+      <property id="module.driver.xspi_hyper.chip_select" value="module.driver.xspi_hyper.chip_select.cs1"/>
+      <property id="module.driver.xspi_hyper.ram_size" value="module.driver.xspi.memory_size.memory_size_8mb"/>
+      <property id="module.driver.xspi_hyper.read_latency_count" value="module.driver.xspi_hyper.read_latency_count.6_cycles"/>
+      <property id="module.driver.xspi_hyper.memory_write_latency_count" value="module.driver.xspi_hyper.memory_write_latency_count.6_cycles"/>
+      <property id="module.driver.xspi_hyper.register_write_latency_count" value="module.driver.xspi_hyper.register_write_latency_count.0_cycle"/>
+      <property id="module.driver.xspi_hyper.burst_type" value="module.driver.xspi_hyper.burst_type.linear_burst"/>
+      <property id="module.driver.xspi_hyper.access_space" value="module.driver.xspi_hyper.access_space.access_memory"/>
+      <property id="module.driver.xspi_hyper.data_latching_delay_clock" value="0x08"/>
+      <property id="module.driver.xspi_hyper.p_autocalibration_preamble_pattern_addr" value="0x00"/>
+      <property id="module.driver.xspi_hyper.transaction_interval" value="module.driver.xspi_hyper.transaction_interval.7_cycles"/>
+      <property id="module.driver.xspi_hyper.pull_up_timing" value="module.driver.xspi_hyper.pull_up_timing.no_extension"/>
+      <property id="module.driver.xspi_hyper.pull_down_timing" value="module.driver.xspi_hyper.pull_down_timing.no_extension"/>
+    </module>
     <context id="_hal.0">
       <stack module="module.driver.ioport_on_ioport.0"/>
       <stack module="module.bsp.memory_config.0"/>
       <stack module="module.driver.qspi_on_xspi_qspi.958460396"/>
+      <stack module="module.driver.hyper_ram_on_xspi_hyper.2064180533"/>
     </context>
     <config id="config.driver.ioport">
       <property id="config.driver.ioport.checking" value="config.driver.ioport.checking.system"/>

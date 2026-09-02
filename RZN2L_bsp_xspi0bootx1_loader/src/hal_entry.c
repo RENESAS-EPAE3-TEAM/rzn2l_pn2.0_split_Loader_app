@@ -38,6 +38,9 @@ typedef struct
  * Runs in the Loader (SSBL) so that the Application, once copied to SystemRAM
  * and started, can immediately access the external SDRAM (CS2/CS3 mirror). */
 #define BSC_PROTECT_KEY     (0xa55a0000)
+#ifdef USE_HRAM
+static fsp_err_t hram_init(void);
+#endif
 static void bsp_sdram_init(void);
 static void bsp_qspi_quad_enable(void);
 
@@ -171,10 +174,27 @@ void R_BSP_WarmStart (bsp_warm_start_event_t event)
          * BEFORE jumping to the Application (which runs XIP @ 0x60100000). */
         bsp_qspi_quad_enable();
 
-        /* Initialize external SDRAM so the Application can use CS2/CS3 mirror. */
+        /* The Loader owns external RAM initialization before starting the App. */
+#ifdef USE_HRAM
+        if (FSP_SUCCESS != hram_init())
+        {
+            while (1)
+            {
+                ;
+            }
+        }
+#else
         bsp_sdram_init();
+#endif
     }
 }
+
+#ifdef USE_HRAM
+static fsp_err_t hram_init(void)
+{
+    return g_hyperbus0.p_api->open(g_hyperbus0.p_ctrl, g_hyperbus0.p_cfg);
+}
+#endif
 
 /*******************************************************************************************************************//**
  * @brief      Switch external QSPI flash to Quad mode (1S-4S-4S, 0xEB read).

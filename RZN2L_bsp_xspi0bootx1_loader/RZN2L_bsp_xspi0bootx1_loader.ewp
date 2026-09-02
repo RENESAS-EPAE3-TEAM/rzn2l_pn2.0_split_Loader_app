@@ -247,7 +247,7 @@
                 </option>
                 <option>
                     <name>CCDefines</name>
-                    <state></state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -792,7 +792,7 @@
                 </option>
                 <option>
                     <name>IlinkConfigDefines</name>
-                    <state></state>
+                    <state>USE_HRAM=1</state>
                 </option>
                 <option>
                     <name>IlinkMapFile</name>
@@ -1386,6 +1386,7 @@
                 <option>
                     <name>CCDefines</name>
                     <state>NDEBUG</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1930,7 +1931,7 @@
                 </option>
                 <option>
                     <name>IlinkConfigDefines</name>
-                    <state></state>
+                    <state>USE_HRAM=1</state>
                 </option>
                 <option>
                     <name>IlinkMapFile</name>
@@ -2324,6 +2325,9 @@
                 <name>$PROJ_DIR$\rzn_cfg\fsp_cfg\r_ioport_cfg.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\rzn_cfg\fsp_cfg\r_xspi_hyper_cfg.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\rzn_cfg\driver\r_xspi_qspi_cfg.h</name>
             </file>
         </group>
@@ -2648,6 +2652,9 @@
                 <name>$PROJ_DIR$\rzn\fsp\src\bsp\cmsis\Device\RENESAS\Include\R9A09G087.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\rzn\fsp\inc\api\r_hyperbus_api.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\rzn\fsp\src\r_ioport\r_ioport.c</name>
             </file>
             <file>
@@ -2658,6 +2665,12 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\rzn\fsp\inc\api\r_spi_flash_api.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\rzn\fsp\src\r_xspi_hyper\r_xspi_hyper.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\rzn\fsp\inc\instances\r_xspi_hyper.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\rzn\fsp\src\r_xspi_qspi\r_xspi_qspi.c</name>

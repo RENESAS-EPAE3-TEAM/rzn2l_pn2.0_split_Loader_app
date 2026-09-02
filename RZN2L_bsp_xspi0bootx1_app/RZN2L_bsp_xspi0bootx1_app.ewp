@@ -249,6 +249,7 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -703,6 +704,7 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>AList</name>
@@ -923,7 +925,7 @@
                 </option>
                 <option>
                     <name>IlinkConfigDefines</name>
-                    <state></state>
+                    <state>USE_HRAM=1</state>
                 </option>
                 <option>
                     <name>IlinkMapFile</name>
@@ -1541,6 +1543,7 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1994,6 +1997,7 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>AList</name>
@@ -2214,7 +2218,7 @@
                 </option>
                 <option>
                     <name>IlinkConfigDefines</name>
-                    <state></state>
+                    <state>USE_HRAM=1</state>
                 </option>
                 <option>
                     <name>IlinkMapFile</name>
@@ -2832,6 +2836,7 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -3286,6 +3291,7 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>AList</name>
@@ -3506,7 +3512,7 @@
                 </option>
                 <option>
                     <name>IlinkConfigDefines</name>
-                    <state></state>
+                    <state>USE_HRAM=1</state>
                 </option>
                 <option>
                     <name>IlinkMapFile</name>
@@ -4124,6 +4130,7 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -4577,6 +4584,7 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
+                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>AList</name>
@@ -4797,7 +4805,7 @@
                 </option>
                 <option>
                     <name>IlinkConfigDefines</name>
-                    <state></state>
+                    <state>USE_HRAM=1</state>
                 </option>
                 <option>
                     <name>IlinkMapFile</name>
