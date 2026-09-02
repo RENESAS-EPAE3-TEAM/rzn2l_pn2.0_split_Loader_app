@@ -4112,25 +4112,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>WS2</state>
-                    <state>RZT2_RSK_PNS</state>
-                    <state>USE_RTOS</state>
-                    <state>RZT2_RSK</state>
-                    <state>USE_ETHERNET</state>
-                    <state>PHY_100MBPS_LIMIT</state>
-                    <state>PNIOD_PLATFORM=0x4000</state>
-                    <state>IOD_INCLUDE_S2_REDUNDANCY=1</state>
-                    <state>IOD_INCLUDE_DR=1</state>
-                    <state>IOD_INCLUDE_MRPD=1</state>
-                    <state>ETHER_CONFIG_PTP=1</state>
-                    <state>EXAMPL_DEV_CONFIG_VERSION=44</state>
-                    <state>_PrintfDebug</state>
-                    <state>PSI_CFG_INCLUDE_USER_TRACE_H=ltrc_if.h</state>
-                    <state>BSP_WARM_START_POST_LOADER=(BSP_WARM_START_POST_C+1)</state>
-                    <state>_RZN_ORDINAL=1</state>
-                    <state>_RZN_CORE=CR52_0</state>
-                    <state>_RENESAS_RZN_</state>
-                    <state>USE_HRAM</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -4211,17 +4193,6 @@
                 </option>
                 <option>
                     <name>IExtraOptions</name>
-                    <state>--diag_warning Pe147</state>
-                    <state>--diag_suppress Pe147</state>
-                    <state>--diag_suppress Pe188</state>
-                    <state>--diag_suppress Pa039</state>
-                    <state>--diag_suppress Pa082</state>
-                    <state>--diag_suppress Pe069</state>
-                    <state>--diag_suppress Pe177</state>
-                    <state>--diag_suppress Pe186</state>
-                    <state>--diag_suppress Pe223</state>
-                    <state>--diag_suppress Pe550</state>
-                    <state>--diag_suppress Pa134</state>
                     <state>-f "$PROJ_DIR$/xcl/rasc_iccarm"</state>
                 </option>
                 <option>
@@ -4250,7 +4221,7 @@
                 </option>
                 <option>
                     <name>OutputFile</name>
-                    <state>$FILE_BNAME$.o</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>CCLibConfigHeader</name>
@@ -4262,130 +4233,7 @@
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
-                    <state>$PROJ_DIR$</state>
-                    <state>$PROJ_DIR$/rzn/fsp/src/bsp/mcu/all/cr</state>
-                    <state>$PROJ_DIR$/rzn/fsp/src/rm_freertos_port/cr</state>
-                    <state>$PROJ_DIR$/rzn/arm/CMSIS_6/CMSIS/Core/Include/a-profile</state>
-                    <state>$PROJ_DIR$/rzn/arm/CMSIS_6/CMSIS/Core/Include/m-profile</state>
-                    <state>$PROJ_DIR$/rzn/arm/CMSIS_6/CMSIS/Core/Include/r-profile</state>
-                    <state>$PROJ_DIR$/rzn/arm/CMSIS_6/CMSIS/Core/Include</state>
-                    <state>$PROJ_DIR$/rzn/aws/FreeRTOS-Kernel/include</state>
-                    <state>$PROJ_DIR$/rzn/fsp/inc</state>
-                    <state>$PROJ_DIR$/rzn/fsp/inc/api</state>
-                    <state>$PROJ_DIR$/rzn/fsp/inc/instances</state>
-                    <state>$PROJ_DIR$/rzn/fsp/src/rm_freertos_port</state>
-                    <state>$PROJ_DIR$/rzn_cfg/aws</state>
-                    <state>$PROJ_DIR$/rzn_cfg/driver</state>
-                    <state>$PROJ_DIR$/rzn_cfg/fsp_cfg</state>
-                    <state>$PROJ_DIR$/rzn_cfg/fsp_cfg/bsp</state>
-                    <state>$PROJ_DIR$/rzn_gen</state>
-                    <state>$PROJ_DIR$/src</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\pns\enic</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\pns\eddp</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\rsk\v3\rzt\fsp\inc</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\rsk\v3\rz_cfg\fsp_cfg</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\rsk\v3\rz_gen</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\rsk\v3\src</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\rsk\v3\rz\fsp\inc\api</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\rsk\v3\rz\fsp\inc\instances</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\rsk\v3\r_ether_apl</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\acp\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\acp\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\clrpc\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\clrpc\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\cm\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\cm\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\eddp\krisc32\firmware\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\eddp\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\eddp\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\gsy\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\gsy\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\ip2pn\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\ip2pn\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\lldp\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\lldp\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\mrp\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\mrp\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\pnio\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\pnio\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\pof\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\pof\src\dmi\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\pof\src\edd\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\pof\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\pof\src\prm\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\acp\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\clrpc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\cm\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\eddp\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\gsy\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\ip2pn\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\lldp\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\lsa\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\mrp\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\pnio\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\pof\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\snmpx\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\sock\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\psi\src\pnstack\tcip\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\snmpx\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\snmpx\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\snmpx\src_obsd\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\snmpx\src_obsd\Adapter\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\sock\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\sock\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\any_ip\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\any_ip\obsd\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Userland\src\include\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Userland\src\include\arpa\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Userland\src\lib\libc\include\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Userland\src\lib\libevent\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Userland\src\sbin\dhclient\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\sys\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\net\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\netinet\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\crypto\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\lib\libkern\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\altq\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\crypto\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Kernel\dev\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\allports\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\KernelPort\GENERIC\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\KernelPort\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\Adapter\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_run\src\tcip\src_obsd\UserlandPort\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\evma\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\evma\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\gdma\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\gdma\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\flash_ospi\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\iom\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\iom\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\pcpnio_lsa\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\pndv\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\pndv\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\pnio_api_inc\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\pnpb\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\pnpb\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\sys\cfg\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\sys\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\sysadapt1\cfg\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\sysadapt1\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\trace_dk\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\tskma\common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\tskma\inc\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\source\Platform\rzt2_rtos</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\ext\EK52\pn_ioddevkits\src\application\App_common\</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\pns\RSync\ptp1as</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\pns\rtos</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\pns\eddp</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\pns\eddp\debug</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\pns\eddp\consumer_provider</state>
-                    <state>$PROJ_DIR$\..\..\profinet_sdk\src\pns\eddp\Custom\storm_protection</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -4401,7 +4249,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -4410,7 +4258,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
@@ -4584,7 +4432,6 @@
                     <state>_RZN_ORDINAL=1</state>
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
-                    <state>USE_HRAM</state>
                 </option>
                 <option>
                     <name>AList</name>
@@ -4773,7 +4620,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>RZN2L_bsp_xspi0bootx1_app.out</state>
+                    <state>###Unitialized###</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>
@@ -4805,7 +4652,7 @@
                 </option>
                 <option>
                     <name>IlinkConfigDefines</name>
-                    <state>USE_HRAM=1</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>IlinkMapFile</name>
@@ -4873,7 +4720,6 @@
                 </option>
                 <option>
                     <name>IlinkExtraOptions</name>
-                    <state>--config_search "$PROJ_DIR$"</state>
                     <state>-f "$PROJ_DIR$/xcl/rasc_ilinkarm"</state>
                 </option>
                 <option>
@@ -5071,7 +4917,7 @@
                 </option>
                 <option>
                     <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state>RZN2L_bsp_xspi0bootx1_app_import_lib.o</state>
+                    <state>###Unitialized###</state>
                 </option>
                 <option>
                     <name>OILinkExtraOption</name>
