@@ -1386,6 +1386,7 @@
                 <option>
                     <name>CCDefines</name>
                     <state>USE_HRAM</state>
+                    <state>TEMPORARY_MEASURES_WHEN_USING_QSPI_AND_HYPERFLASH_AT_THE_SAME_TIME</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>

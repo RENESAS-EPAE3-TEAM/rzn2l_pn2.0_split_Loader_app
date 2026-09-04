@@ -1542,6 +1542,7 @@
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
                     <state>USE_HRAM</state>
+                    <state>TEMPORARY_MEASURES_WHEN_USING_QSPI_AND_HYPERFLASH_AT_THE_SAME_TIME</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -2248,7 +2249,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$\script\fsp_xspi0_boot_m.icf</state>
+                    <state>$PROJ_DIR$/script/fsp_xspi0_boot.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -4126,6 +4127,7 @@
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
                     <state>USE_HRAM</state>
+                    <state>TEMPORARY_MEASURES_WHEN_USING_QSPI_AND_HYPERFLASH_AT_THE_SAME_TIME</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -6710,6 +6712,7 @@
                     <state>_RZN_CORE=CR52_0</state>
                     <state>_RENESAS_RZN_</state>
                     <state>USE_HRAM</state>
+                    <state>TEMPORARY_MEASURES_WHEN_USING_QSPI_AND_HYPERFLASH_AT_THE_SAME_TIME</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -7984,7 +7987,24 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state></state>
+                    <state>WS2</state>
+                    <state>RZT2_RSK_PNS</state>
+                    <state>USE_RTOS</state>
+                    <state>RZT2_RSK</state>
+                    <state>USE_ETHERNET</state>
+                    <state>PHY_100MBPS_LIMIT</state>
+                    <state>PNIOD_PLATFORM=0x4000</state>
+                    <state>IOD_INCLUDE_S2_REDUNDANCY=1</state>
+                    <state>IOD_INCLUDE_DR=1</state>
+                    <state>IOD_INCLUDE_MRPD=1</state>
+                    <state>ETHER_CONFIG_PTP=1</state>
+                    <state>EXAMPL_DEV_CONFIG_VERSION=44</state>
+                    <state>_PrintfDebug</state>
+                    <state>PSI_CFG_INCLUDE_USER_TRACE_H=ltrc_if.h</state>
+                    <state>BSP_WARM_START_POST_LOADER=(BSP_WARM_START_POST_C+1)</state>
+                    <state>_RZN_ORDINAL=1</state>
+                    <state>_RZN_CORE=CR52_0</state>
+                    <state>_RENESAS_RZN_</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -8962,7 +8982,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>9.50.1.69462</state>
+                    <state>9.70.2.18199</state>
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
@@ -9123,7 +9143,26 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
+                    <state>WS2</state>
+                    <state>RZT2_RSK_PNS</state>
+                    <state>USE_RTOS</state>
+                    <state>RZT2_RSK</state>
+                    <state>USE_ETHERNET</state>
+                    <state>PHY_100MBPS_LIMIT</state>
+                    <state>PNIOD_PLATFORM=0x4000</state>
+                    <state>IOD_INCLUDE_S2_REDUNDANCY=1</state>
+                    <state>IOD_INCLUDE_DR=1</state>
+                    <state>IOD_INCLUDE_MRPD=1</state>
+                    <state>ETHER_CONFIG_PTP=1</state>
+                    <state>EXAMPL_DEV_CONFIG_VERSION=44</state>
+                    <state>_PrintfDebug</state>
+                    <state>PSI_CFG_INCLUDE_USER_TRACE_H=ltrc_if.h</state>
+                    <state>BSP_WARM_START_POST_LOADER=(BSP_WARM_START_POST_C+1)</state>
+                    <state>_RZN_ORDINAL=1</state>
+                    <state>_RZN_CORE=CR52_0</state>
+                    <state>_RENESAS_RZN_</state>
                     <state>USE_HRAM</state>
+                    <state>TEMPORARY_MEASURES_WHEN_USING_QSPI_AND_HYPERFLASH_AT_THE_SAME_TIME</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -9232,7 +9271,7 @@
                 </option>
                 <option>
                     <name>OutputFile</name>
-                    <state></state>
+                    <state>$FILE_BNAME$.o</state>
                 </option>
                 <option>
                     <name>CCLibConfigHeader</name>
@@ -9631,7 +9670,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>###Unitialized###</state>
+                    <state>RZN2L_bsp_xspi0bootx1_app.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>

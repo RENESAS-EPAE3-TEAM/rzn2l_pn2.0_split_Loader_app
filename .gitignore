@@ -10,6 +10,8 @@
 # ... then re-include exactly what we want to track at the root.
 !/.gitignore
 !/.gitattributes
+!/HYPERRAM_SDRAM_NOTES.md
+!/HYPERRAM_SDRAM_NOTES_EN.md
 !/RZN2L_bsp_xspi0bootx1_loader/
 !/RZN2L_bsp_xspi0bootx1_app/
 
